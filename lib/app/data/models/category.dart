@@ -5,20 +5,21 @@ class Category {
   final String businessId;
   final String name;
   final DateTime createdAt;
+  final int? totalProduct;
 
-  Category({
-    required this.id,
-    required this.businessId,
-    required this.name,
-    required this.createdAt,
-  });
+  Category(
+      {required this.id,
+      required this.businessId,
+      required this.name,
+      required this.createdAt,
+      required this.totalProduct});
 
   factory Category.fromRow(Sqlite.Row row) {
     return Category(
-      id: row["id"],
-      businessId: row["business_id"],
-      name: row["name"],
-      createdAt: DateTime.parse(row["created_at"]),
-    );
+        id: row["id"],
+        businessId: row["business_id"],
+        name: row["name"],
+        createdAt: DateTime.parse(row["created_at"]),
+        totalProduct: row["total_product"]);
   }
 }

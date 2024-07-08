@@ -12,24 +12,29 @@ class ProductRepository {
 
   // GET ALL STATIC
   Future<List<Product>> getAllProduct(
-      {required businessId, bool withTotalSold = false}) async {
+      {required businessId,
+      bool withTotalSold = false,
+      int limit = 10,
+      int offset = 10}) async {
     String query;
     if (withTotalSold) {
       query = '''
         SELECT p.*, 
           COALESCE(SUM(rp.quantity), 0) as total_sold
         FROM $productsTable p
-        LEFT JOIN receipt_products rp ON p.id = rp.product_id
+        LEFT JOIN $receiptProductsTable rp ON p.id = rp.product_id
         WHERE p.business_id = ?
         GROUP BY p.id
+        LIMIT ? OFFSET ? 
       ''';
     } else {
       query = '''
         SELECT * FROM $productsTable WHERE business_id = ?
+        LIMIT ? OFFSET ? 
       ''';
     }
 
-    final results = await db.getAll(query, [businessId]);
+    final results = await db.getAll(query, [businessId, limit, offset]);
     return results.map((result) => Product.fromRow(result)).toList();
   }
 
