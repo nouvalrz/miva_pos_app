@@ -15,7 +15,7 @@ class ProductRepository {
       {required businessId,
       bool withTotalSold = false,
       int limit = 10,
-      int offset = 10}) async {
+      int offset = 0}) async {
     String query;
     if (withTotalSold) {
       query = '''

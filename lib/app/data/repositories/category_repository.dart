@@ -14,7 +14,7 @@ class CategoryRepository {
       {required String businessId,
       bool withTotalProduct = false,
       int limit = 10,
-      int offset = 10}) async {
+      int offset = 0}) async {
     String query;
     if (withTotalProduct) {
       query = '''

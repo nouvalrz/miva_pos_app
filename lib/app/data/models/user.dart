@@ -19,7 +19,7 @@ class User {
   factory User.fromRow(Sqlite.Row row) {
     return User(
         id: row["id"],
-        businessId: row["business_id"],
+        businessId: row["business_id"].toString(),
         role: row["role"],
         createdAt: DateTime.parse(row["created_at"]),
         authUserId: row["auth_user_id"],
