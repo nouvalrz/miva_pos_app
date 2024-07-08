@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:miva_pos_app/app/data/models/business.dart';
 import 'package:miva_pos_app/app/data/models/user.dart' as user_model;
+import 'package:miva_pos_app/app/data/repositories/business_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/user_repository.dart';
 import 'package:miva_pos_app/app/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:miva_pos_app/app/modules/dashboard/views/dashboard_view.dart';
@@ -18,11 +20,14 @@ import 'package:miva_pos_app/app/modules/setting/views/setting_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeController extends GetxController {
-  HomeController({required this.userRepository});
+  HomeController(
+      {required this.userRepository, required this.businessRepository});
 
   final UserRepository userRepository;
+  final BusinessRepository businessRepository;
   final supabaseInstance = Supabase.instance.client;
   late user_model.User loggedInUser;
+  late Business loggedInBusiness;
   final RxInt selectedPage = 0.obs;
   final List<Widget> pages = [
     const DashboardView(),
@@ -39,6 +44,7 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     await getUser();
+    await getBusiness();
     DashboardBinding().dependencies();
   }
 
@@ -64,6 +70,13 @@ class HomeController extends GetxController {
     isLoading.value = true;
     loggedInUser = await userRepository
         .getUserByAuthUserId(supabaseInstance.auth.currentSession!.user.id);
+    isLoading.value = false;
+  }
+
+  Future<void> getBusiness() async {
+    isLoading.value = true;
+    loggedInBusiness =
+        await businessRepository.getBusiness(loggedInUser.businessId);
     isLoading.value = false;
   }
 }

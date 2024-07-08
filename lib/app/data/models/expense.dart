@@ -5,7 +5,7 @@ class Expense {
   final String businessId;
   final String name;
   final int amount;
-  final String description;
+  final String? description;
   final DateTime createdAt;
 
   Expense({
@@ -19,12 +19,12 @@ class Expense {
 
   factory Expense.fromRow(Sqlite.Row row) {
     return Expense(
-      id: row["id"],
-      businessId: row["business_id"],
+      id: row["id"].toString(),
+      businessId: row["business_id"].toString(),
       name: row["name"],
       amount: row["amount"],
       description: row["description"],
-      createdAt: DateTime.parse(row["created_at"]),
+      createdAt: DateTime.parse(row["created_at"] + "Z"),
     );
   }
 }

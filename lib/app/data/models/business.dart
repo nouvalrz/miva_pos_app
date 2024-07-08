@@ -4,7 +4,7 @@ class Business {
   final String id;
   final String name;
   final String address;
-  final String logoUrl;
+  final String? logoUrl;
   final DateTime createdAt;
 
   Business({
