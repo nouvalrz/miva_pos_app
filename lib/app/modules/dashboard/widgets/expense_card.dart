@@ -50,7 +50,7 @@ class ExpenseCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 15),
                 ),
                 Text(
-                  "+Rp. ${expense.amount}",
+                  "- ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(expense.amount)}",
                   style: const TextStyle(
                       color: Color.fromARGB(255, 187, 39, 39), fontSize: 15),
                 ),

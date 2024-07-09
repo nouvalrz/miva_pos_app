@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:miva_pos_app/app/data/models/expense.dart';
 import 'package:miva_pos_app/app/data/models/receipt.dart';
 import 'package:miva_pos_app/app/modules/dashboard/widgets/expense_card.dart';
@@ -137,7 +138,7 @@ class DashboardView extends GetView<DashboardController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text(
-                                          "Riwayat Transaksi",
+                                          "Transaksi Hari Ini",
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
@@ -201,15 +202,7 @@ class DashboardView extends GetView<DashboardController> {
                                       ),
                                     ),
                                   )
-                                : Container(
-                                    color: const Color(0xFF40228C),
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        'assets/images/miva-pos-logo.svg',
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                : TodayReceiptsSummaryCard(),
                           )),
                     ],
                   ),
@@ -220,85 +213,144 @@ class DashboardView extends GetView<DashboardController> {
   }
 }
 
-// class TodayReceiptsSummaryCard extends StatelessWidget {
-//   TodayReceiptsSummaryCard({
-//     super.key,
-//   });
+class TodayReceiptsSummaryCard extends StatelessWidget {
+  TodayReceiptsSummaryCard({
+    super.key,
+  });
 
-//   final DashboardController dashboardController =
-//       Get.find<DashboardController>();
+  final DashboardController dashboardController =
+      Get.find<DashboardController>();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(16),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           const Text(
-//             "Ringkasan Hari Ini",
-//             style: TextStyle(
-//               fontSize: 16,
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//           const Gap(4),
-//           Text(
-//             DateFormat('d MMMM yyyy', 'id_ID').format(DateTime.now()),
-//             style: const TextStyle(
-//               color: Color(0xFF40228C),
-//             ),
-//           ),
-//           const Gap(16),
-//           Container(
-//             decoration: BoxDecoration(
-//                 color: const Color(0xFFF3F1FF),
-//                 borderRadius: BorderRadius.circular(12)),
-//             child: Obx(() => RefreshIndicator(
-//                   onRefresh: () async {
-//                     dashboardController.getTodayReceiptsSummary();
-//                   },
-//                   child: ListView(
-//                     physics: const AlwaysScrollableScrollPhysics(),
-//                     shrinkWrap: true,
-//                     children: [
-//                       ListTile(
-//                         leading: const Icon(
-//                           Icons.circle,
-//                           color: Color(0xFF40228C),
-//                         ),
-//                         title: const Text('Total Struk'),
-//                         subtitle: Text(
-//                             '${dashboardController.todayReceiptsCount.value} Struk'),
-//                       ),
-//                       ListTile(
-//                         leading: const Icon(
-//                           Icons.circle,
-//                           color: Color(0xFF40228C),
-//                         ),
-//                         title: const Text('Total Pemasukkan'),
-//                         subtitle: Text(NumberFormat.currency(
-//                                 locale: 'id', symbol: 'Rp', decimalDigits: 0)
-//                             .format(
-//                                 dashboardController.todayReceiptsIncome.value)),
-//                       ),
-//                       ListTile(
-//                         leading: const Icon(
-//                           Icons.circle,
-//                           color: Color(0xFF40228C),
-//                         ),
-//                         title: const Text('Total Profit'),
-//                         subtitle: Text(NumberFormat.currency(
-//                                 locale: 'id', symbol: 'Rp', decimalDigits: 0)
-//                             .format(
-//                                 dashboardController.todayReceiptsProfit.value)),
-//                       ),
-//                     ],
-//                   ),
-//                 )),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Ringkasan Hari Ini",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Gap(4),
+          Text(
+            DateFormat('d MMMM yyyy', 'id_ID').format(DateTime.now()),
+            style: const TextStyle(
+              color: Color(0xFF40228C),
+            ),
+          ),
+          const Gap(12),
+          Obx(() => Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFF3F1FF),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.circle,
+                            color: Color(0xFF40228C),
+                          ),
+                          title: Text(
+                              '${dashboardController.todayReceiptsCount.value} Struk'),
+                        )),
+                  ),
+                  const Gap(12),
+                  Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFF3F1FF),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.circle,
+                            color: Color(0xFF40228C),
+                          ),
+                          title: Text(
+                              '${dashboardController.todayExpensesCount.value} Pengeluaran'),
+                        )),
+                  ),
+                ],
+              )),
+          const Gap(16),
+          Container(
+            decoration: BoxDecoration(
+                color: const Color(0xFFF3F1FF),
+                borderRadius: BorderRadius.circular(12)),
+            child: Obx(() => ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.circle,
+                        color: Color(0xFF40228C),
+                      ),
+                      title: const Text('Jumlah Struk'),
+                      subtitle: Text(
+                          '${dashboardController.todayReceiptsCount.value} Struk'),
+                    ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.circle,
+                        color: Color(0xFF40228C),
+                      ),
+                      title: const Text('Total Penjualan'),
+                      subtitle: Text(NumberFormat.currency(
+                              locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                          .format(dashboardController.todayIncomeTotal.value)),
+                    ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.circle,
+                        color: Color(0xFF40228C),
+                      ),
+                      title: const Text('Total Keuntungan'),
+                      subtitle: Text(NumberFormat.currency(
+                              locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                          .format(
+                              dashboardController.todayGrossProfitTotal.value)),
+                    ),
+                  ],
+                )),
+          ),
+          const Gap(15),
+          Container(
+            decoration: BoxDecoration(
+                color: const Color(0xFFF3F1FF),
+                borderRadius: BorderRadius.circular(12)),
+            child: Obx(() => ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.circle,
+                        color: Color(0xFF40228C),
+                      ),
+                      title: const Text('Jumlah Pengeluaran'),
+                      subtitle: Text(
+                          '${dashboardController.todayExpensesCount.value} Pengeluaran'),
+                    ),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.circle,
+                        color: Color(0xFF40228C),
+                      ),
+                      title: const Text('Total Pengeluaran'),
+                      subtitle: Text(NumberFormat.currency(
+                              locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                          .format(dashboardController.todayExpenseTotal.value)),
+                    ),
+                  ],
+                )),
+          )
+        ],
+      ),
+    );
+  }
+}

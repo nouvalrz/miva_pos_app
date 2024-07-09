@@ -52,8 +52,9 @@ class ReceiptCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 15),
                 ),
                 Text(
-                  "+Rp. ${receipt.totalBill}",
-                  style: const TextStyle(color: Colors.green, fontSize: 15),
+                  "+ ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(receipt.totalBill)}",
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 46, 131, 49), fontSize: 15),
                 ),
               ],
             ),
