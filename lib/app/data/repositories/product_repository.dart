@@ -10,31 +10,57 @@ class ProductRepository {
     return Product.fromRow(results);
   }
 
-  // GET ALL STATIC
-  Future<List<Product>> getAllProduct(
-      {required businessId,
-      bool withTotalSold = false,
-      int limit = 10,
-      int offset = 0}) async {
+// GET ALL STATIC
+  Future<List<Product>> getAllProduct({
+    required String businessId,
+    bool withTotalSold = false,
+    int limit = 10,
+    int offset = 0,
+    String? searchKeyword,
+  }) async {
     String query;
+    List<dynamic> parameters = [];
+
     if (withTotalSold) {
       query = '''
-        SELECT p.*, 
-          COALESCE(SUM(rp.quantity), 0) as total_sold
-        FROM $productsTable p
-        LEFT JOIN $receiptProductsTable rp ON p.id = rp.product_id
-        WHERE p.business_id = ?
-        GROUP BY p.id
-        LIMIT ? OFFSET ? 
-      ''';
+      SELECT p.*, 
+        COALESCE(SUM(rp.quantity), 0) as total_sold
+      FROM $productsTable p
+      LEFT JOIN $receiptProductsTable rp ON p.id = rp.product_id
+      WHERE 
+      ${searchKeyword != null && searchKeyword.isNotEmpty ? "(p.name LIKE ? OR p.barcode_number LIKE ?) AND " : ''}
+      p.business_id = ?
+      GROUP BY p.id
+      LIMIT ? OFFSET ? 
+    ''';
+
+      if (searchKeyword != null && searchKeyword.isNotEmpty) {
+        parameters.add('%$searchKeyword%');
+        parameters.add('%$searchKeyword%');
+      }
+
+      parameters.add(businessId);
+      parameters.add(limit);
+      parameters.add(offset);
     } else {
       query = '''
-        SELECT * FROM $productsTable WHERE business_id = ?
-        LIMIT ? OFFSET ? 
-      ''';
+      SELECT * FROM $productsTable WHERE 
+      ${searchKeyword != null ? "(name LIKE ? OR barcode_number LIKE ?) AND " : ''}
+      business_id = ?
+      LIMIT ? OFFSET ? 
+    ''';
+
+      if (searchKeyword != null) {
+        parameters.add('%$searchKeyword%');
+        parameters.add('%$searchKeyword%');
+      }
+
+      parameters.add(businessId);
+      parameters.add(limit);
+      parameters.add(offset);
     }
 
-    final results = await db.getAll(query, [businessId, limit, offset]);
+    final results = await db.getAll(query, parameters);
     return results.map((result) => Product.fromRow(result)).toList();
   }
 

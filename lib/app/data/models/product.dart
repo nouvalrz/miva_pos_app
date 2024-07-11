@@ -6,7 +6,7 @@ class Product {
   final String categoryId;
   final String barcodeNumber;
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
   final int salePrice;
   final int costPrice;
   final int? stock;
@@ -30,10 +30,10 @@ class Product {
 
   factory Product.fromRow(Sqlite.Row row) {
     return Product(
-        id: row["id"],
-        businessId: row["business_id"],
-        categoryId: row["category_id"],
-        barcodeNumber: row["barcode_number"],
+        id: row["id"].toString(),
+        businessId: row["business_id"].toString(),
+        categoryId: row["category_id"].toString(),
+        barcodeNumber: row["barcode_number"].toString(),
         name: row["name"],
         salePrice: row["sale_price"],
         costPrice: row["cost_price"],

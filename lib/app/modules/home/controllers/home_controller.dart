@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:miva_pos_app/app/data/models/business.dart';
@@ -39,6 +40,8 @@ class HomeController extends GetxController {
     const ReceiptView()
   ];
   RxBool isLoading = false.obs;
+
+  SideMenuController sideMenuController = SideMenuController();
 
   @override
   void onInit() async {

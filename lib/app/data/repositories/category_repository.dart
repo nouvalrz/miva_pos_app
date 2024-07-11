@@ -19,14 +19,14 @@ class CategoryRepository {
     if (withTotalProduct) {
       query = '''
         SELECT $categoriesTable.*, COUNT($productsTable.category_id) as total_product  FROM $categoriesTable  LEFT JOIN $productsTable  ON $categoriesTable.id = $productsTable.category_id
-        WHERE $categoriesTable.business_id = $businessId
+        WHERE $categoriesTable.business_id = ?
         GROUP BY $categoriesTable.id;
         LIMIT ? OFFSET ?
       ''';
     } else {
       query = '''
         SELECT * FROM $categoriesTable
-        WHERE business_id = $businessId
+        WHERE business_id = ?
         LIMIT ? OFFSET ?
       ''';
     }

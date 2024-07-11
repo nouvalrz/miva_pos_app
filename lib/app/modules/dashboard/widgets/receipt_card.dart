@@ -29,7 +29,7 @@ class ReceiptCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Struk ${receipt.receiptNumber}",
+                  "Struk #${receipt.receiptNumber}",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15),
                 ),

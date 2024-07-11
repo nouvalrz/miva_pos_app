@@ -23,6 +23,10 @@ dependencies:
   lazy_load_indexed_stack: ^1.1.0
   infinite_scroll_pagination: ^4.0.0
   rxdart: ^0.27.7
+  google_fonts: ^6.2.1
+  easy_sidemenu: ^0.6.0
+  flutter_staggered_grid_view: ^0.7.0
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
   flutter_lints: 4.0.0

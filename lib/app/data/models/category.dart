@@ -16,8 +16,8 @@ class Category {
 
   factory Category.fromRow(Sqlite.Row row) {
     return Category(
-        id: row["id"],
-        businessId: row["business_id"],
+        id: row["id"].toString(),
+        businessId: row["business_id"].toString(),
         name: row["name"],
         createdAt: DateTime.parse(row["created_at"]),
         totalProduct: row["total_product"]);

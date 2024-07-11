@@ -18,7 +18,7 @@ class LoginController extends GetxController {
             password: passwordController.text, email: emailController.text);
         Get.snackbar("Login Success",
             "Welcome ${supabaseClient.auth.currentUser!.email!}");
-        Get.offAllNamed('/home');
+        Get.offAllNamed('/splash');
       } catch (e) {
         Get.snackbar("Login Error", e.toString());
       }

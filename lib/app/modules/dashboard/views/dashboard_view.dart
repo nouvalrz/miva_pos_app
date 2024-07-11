@@ -19,6 +19,7 @@ class DashboardView extends GetView<DashboardController> {
     final HomeController homeController = Get.find<HomeController>();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Obx(() => homeController.isLoading.value
           ? const Center(
               child: CircularProgressIndicator(),
@@ -28,8 +29,10 @@ class DashboardView extends GetView<DashboardController> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFF40228C),
-                  ),
+                      color: Color(0xFF40228C),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8))),
                   width: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +57,7 @@ class DashboardView extends GetView<DashboardController> {
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     Text(
