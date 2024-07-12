@@ -21,8 +21,15 @@ class ProductListController extends GetxController {
       {required this.productRepository, required this.categoryRepository});
 
   Map<String, String> categoryFilterOptions = {"0": "Semua Kategori"};
+  Map<String, String> sortOptions = {
+    ProductRepository.ORDER_BY_NAME_ASC: "Urut A-Z",
+    ProductRepository.ORDER_BY_NAME_DESC: "Urut Z-A",
+    ProductRepository.ORDER_BY_TOTAL_SOLD_DESC: "Penjualan Terbesar",
+    ProductRepository.ORDER_BY_TOTAL_SOLD_ASC: "Penjualan Terkecil"
+  };
 
   RxString selectedCategoryFilter = "0".obs;
+  RxString selectedSort = ProductRepository.ORDER_BY_NAME_ASC.obs;
 
   final PagingController<int, Product> pagingController =
       PagingController(firstPageKey: 0);
@@ -49,7 +56,9 @@ class ProductListController extends GetxController {
           withTotalSold: true,
           limit: pageSize,
           offset: pageKey,
-          searchKeyword: searchInputController.value.text);
+          searchKeyword: searchInputController.value.text,
+          categoryId: selectedCategoryFilter.value,
+          orderQuery: selectedSort.value);
       final isLastPage = productList.length < pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(productList);
@@ -68,7 +77,7 @@ class ProductListController extends GetxController {
     try {
       final HomeController homeController = Get.find<HomeController>();
       List<Category> categoryList = await categoryRepository.getAllCategory(
-          businessId: homeController.loggedInBusiness.id);
+          businessId: homeController.loggedInBusiness.id, withoutLimit: true);
       categoryFilterOptions
           .addAll({for (var item in categoryList) item.id: item.name});
     } catch (e) {

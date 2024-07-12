@@ -39,8 +39,11 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       fontSize: 19,
                       fontWeight: FontWeight.bold),
                 ),
-                const Text("Total : 270 Produk",
-                    style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text(
+                    controller.selectedTab.value == 0
+                        ? "Total semua : ${controller.productsCount.value} Produk"
+                        : "Total semua : ${controller.categoriesCount.value} Kategori",
+                    style: const TextStyle(color: Colors.white, fontSize: 15)),
               ],
             )),
         backgroundColor: const Color(0xFF40228C),

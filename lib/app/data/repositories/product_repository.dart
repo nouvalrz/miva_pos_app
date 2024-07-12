@@ -1,9 +1,16 @@
+// ignore_for_file: constant_identifier_names
+
 import "package:miva_pos_app/app/data/models/product.dart";
 import "package:miva_pos_app/app/services/powersync_service.dart";
 
 import "../models/schema.dart";
 
 class ProductRepository {
+  static const ORDER_BY_NAME_ASC = "ORDER BY name ASC";
+  static const ORDER_BY_NAME_DESC = "ORDER BY name DESC";
+  static const ORDER_BY_TOTAL_SOLD_DESC = "ORDER BY total_sold DESC";
+  static const ORDER_BY_TOTAL_SOLD_ASC = "ORDER BY total_sold ASC";
+
   Future<Product> getProduct({required String id}) async {
     final results =
         await db.get('SELECT * FROM $productsTable WHERE id = ?', [id]);
@@ -11,13 +18,14 @@ class ProductRepository {
   }
 
 // GET ALL STATIC
-  Future<List<Product>> getAllProduct({
-    required String businessId,
-    bool withTotalSold = false,
-    int limit = 10,
-    int offset = 0,
-    String? searchKeyword,
-  }) async {
+  Future<List<Product>> getAllProduct(
+      {required String businessId,
+      bool withTotalSold = false,
+      int limit = 10,
+      int offset = 0,
+      String? searchKeyword,
+      String categoryId = "0",
+      String orderQuery = ORDER_BY_NAME_ASC}) async {
     String query;
     List<dynamic> parameters = [];
 
@@ -29,14 +37,20 @@ class ProductRepository {
       LEFT JOIN $receiptProductsTable rp ON p.id = rp.product_id
       WHERE 
       ${searchKeyword != null && searchKeyword.isNotEmpty ? "(p.name LIKE ? OR p.barcode_number LIKE ?) AND " : ''}
+      ${categoryId != "0" ? "p.category_id = ? AND" : ""}
       p.business_id = ?
       GROUP BY p.id
+      $orderQuery
       LIMIT ? OFFSET ? 
     ''';
 
       if (searchKeyword != null && searchKeyword.isNotEmpty) {
         parameters.add('%$searchKeyword%');
         parameters.add('%$searchKeyword%');
+      }
+
+      if (categoryId != "0") {
+        parameters.add(categoryId);
       }
 
       parameters.add(businessId);
@@ -46,13 +60,19 @@ class ProductRepository {
       query = '''
       SELECT * FROM $productsTable WHERE 
       ${searchKeyword != null ? "(name LIKE ? OR barcode_number LIKE ?) AND " : ''}
+      ${categoryId != "0" ? "p.category_id = ? AND" : ""}
       business_id = ?
+      $orderQuery
       LIMIT ? OFFSET ? 
     ''';
 
       if (searchKeyword != null) {
         parameters.add('%$searchKeyword%');
         parameters.add('%$searchKeyword%');
+      }
+
+      if (categoryId != "0") {
+        parameters.add(categoryId);
       }
 
       parameters.add(businessId);
@@ -119,5 +139,12 @@ class ProductRepository {
       data.id,
     ]);
     return Product.fromRow(results.first);
+  }
+
+  Future<int> getProductsCount(String businessId) async {
+    final results = await db.get(
+        "SELECT COUNT(*) as count from $productsTable WHERE business_id = ?",
+        [businessId]);
+    return results['count'];
   }
 }

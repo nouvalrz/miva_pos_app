@@ -25,4 +25,8 @@ class User {
         authUserId: row["auth_user_id"],
         name: row["name"]);
   }
+
+  bool isAdmin() {
+    return role == "admin";
+  }
 }
