@@ -1,9 +1,16 @@
+// ignore_for_file: constant_identifier_names
+
 import "package:miva_pos_app/app/data/models/category.dart";
 import "package:miva_pos_app/app/services/powersync_service.dart";
 
 import "../models/schema.dart";
 
 class CategoryRepository {
+  static const ORDER_BY_NAME_ASC = "ORDER BY name ASC";
+  static const ORDER_BY_NAME_DESC = "ORDER BY name DESC";
+  static const ORDER_BY_TOTAL_PRODUCT_DESC = "ORDER BY total_product DESC";
+  static const ORDER_BY_TOTAL_PRODUCT_ASC = "ORDER BY total_product ASC";
+
   Future<Category> getCategory({required String id}) async {
     final results =
         await db.get('SELECT * FROM $categoriesTable WHERE id = ?', [id]);
@@ -15,16 +22,25 @@ class CategoryRepository {
       bool withTotalProduct = false,
       int limit = 10,
       int offset = 0,
+      String? searchKeyword,
+      String orderQuery = ORDER_BY_NAME_ASC,
       bool withoutLimit = false}) async {
     String query;
     List<dynamic> parameters = [];
     if (withTotalProduct) {
       query = '''
         SELECT $categoriesTable.*, COUNT($productsTable.category_id) as total_product  FROM $categoriesTable  LEFT JOIN $productsTable  ON $categoriesTable.id = $productsTable.category_id
-        WHERE $categoriesTable.business_id = ?
-        GROUP BY $categoriesTable.id;
+        WHERE 
+        ${searchKeyword != null && searchKeyword.isNotEmpty ? "$categoriesTable.name LIKE ? AND " : ''}
+        $categoriesTable.business_id = ?
+        GROUP BY $categoriesTable.id
+        $orderQuery
         ${!withoutLimit ? 'LIMIT ? OFFSET ?' : ""}
       ''';
+
+      if (searchKeyword != null && searchKeyword.isNotEmpty) {
+        parameters.add('%$searchKeyword%');
+      }
 
       parameters.add(businessId);
       if (!withoutLimit) {
@@ -34,9 +50,15 @@ class CategoryRepository {
     } else {
       query = '''
         SELECT * FROM $categoriesTable
-        WHERE business_id = ?
+        WHERE 
+        ${searchKeyword != null && searchKeyword.isNotEmpty ? "($categoriesTable.name LIKE ? AND " : ''}
+        $categoriesTable.business_id = ?
+        $orderQuery
         ${!withoutLimit ? 'LIMIT ? OFFSET ?' : ""}
       ''';
+      if (searchKeyword != null && searchKeyword.isNotEmpty) {
+        parameters.add('%$searchKeyword%');
+      }
       parameters.add(businessId);
       if (!withoutLimit) {
         parameters.add(limit);

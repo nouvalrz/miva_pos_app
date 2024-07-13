@@ -17,7 +17,7 @@ class ProductCategoryBinding extends Bindings {
       () => CategoryRepository(),
     );
     Get.lazyPut<CategoryListController>(
-      () => CategoryListController(),
+      () => CategoryListController(categoryRepository: Get.find()),
     );
     Get.lazyPut<ProductListController>(
       () => ProductListController(

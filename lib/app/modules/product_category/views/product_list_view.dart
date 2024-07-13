@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -21,15 +22,21 @@ class ProductListView extends GetView {
           Obx(() => productListController.isTopPanelLoading.value
               ? LoadingAnimationWidget.prograssiveDots(
                   color: const Color(0xff40228C), size: 36)
-              : const Row(
+              : Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: ProductSearch(),
                     ),
-                    FilterMenuButton(),
-                    Gap(8),
-                    SortMenuButton(),
-                    Gap(8)
+                    const FilterMenuButton(),
+                    const Gap(8),
+                    const SortMenuButton(),
+                    const Gap(8),
+                    OutlinedButton(
+                        onPressed: () {
+                          productListController.resetQuery();
+                        },
+                        child: const Text("Reset")),
+                    const Gap(8)
                   ],
                 )),
           Expanded(
@@ -114,26 +121,38 @@ class FilterMenuButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       // ignore: sized_box_for_whitespace
-      child: DropdownMenu<String>(
-        width: 260,
-        leadingIcon: const Icon(Icons.category_outlined),
-        textStyle: const TextStyle(fontSize: 14),
-        inputDecorationTheme: const InputDecorationTheme(
-            constraints: BoxConstraints(maxHeight: 40),
-            isDense: true,
-            border: OutlineInputBorder()),
-        menuHeight: 450,
-        initialSelection:
-            productListController.categoryFilterOptions.entries.first.key,
-        dropdownMenuEntries: productListController.categoryFilterOptions.entries
-            .map(
-                (item) => DropdownMenuEntry(value: item.key, label: item.value))
-            .toList(),
-        onSelected: (value) {
-          productListController.selectedCategoryFilter.value = value!;
-          productListController.pagingController.refresh();
-        },
-      ),
+      child: Obx(() => DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              buttonStyleData: ButtonStyleData(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[600]!, // Warna border
+                      width: 1.0, // Ketebalan border
+                    ),
+                    borderRadius: BorderRadius.circular(4.0), // Sudut border
+                  )),
+              dropdownStyleData: const DropdownStyleData(
+                maxHeight: 550,
+              ),
+              value: productListController.selectedCategoryFilter.value,
+              onChanged: (value) {
+                productListController.selectedCategoryFilter.value = value!;
+                productListController.pagingController.refresh();
+              },
+              isDense: true,
+              isExpanded: false,
+              items: productListController.categoryFilterOptions.entries
+                  .map((item) => DropdownMenuItem(
+                        value: item.key,
+                        child: Text(
+                          item.value,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          )),
     );
   }
 }
@@ -150,25 +169,38 @@ class SortMenuButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       // ignore: sized_box_for_whitespace
-      child: DropdownMenu<String>(
-        width: 200,
-        leadingIcon: const Icon(Icons.sort_rounded),
-        textStyle: const TextStyle(fontSize: 14),
-        inputDecorationTheme: const InputDecorationTheme(
-            constraints: BoxConstraints(maxHeight: 40),
-            isDense: true,
-            border: OutlineInputBorder()),
-        menuHeight: 450,
-        initialSelection: productListController.sortOptions.entries.first.key,
-        dropdownMenuEntries: productListController.sortOptions.entries
-            .map(
-                (item) => DropdownMenuEntry(value: item.key, label: item.value))
-            .toList(),
-        onSelected: (value) {
-          productListController.selectedSort.value = value!;
-          productListController.pagingController.refresh();
-        },
-      ),
+      child: Obx(() => DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              buttonStyleData: ButtonStyleData(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[600]!, // Warna border
+                      width: 1.0, // Ketebalan border
+                    ),
+                    borderRadius: BorderRadius.circular(4.0), // Sudut border
+                  )),
+              dropdownStyleData: const DropdownStyleData(
+                maxHeight: 550,
+              ),
+              value: productListController.selectedSort.value,
+              onChanged: (value) {
+                productListController.selectedSort.value = value!;
+                productListController.pagingController.refresh();
+              },
+              isDense: true,
+              isExpanded: false,
+              items: productListController.sortOptions.entries
+                  .map((item) => DropdownMenuItem(
+                        value: item.key,
+                        child: Text(
+                          item.value,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          )),
     );
   }
 }

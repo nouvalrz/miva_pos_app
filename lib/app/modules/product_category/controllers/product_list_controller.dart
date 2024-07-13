@@ -17,6 +17,10 @@ class ProductListController extends GetxController {
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
 
+  final TextEditingController categoryFilterController =
+      TextEditingController();
+  final TextEditingController sortController = TextEditingController();
+
   ProductListController(
       {required this.productRepository, required this.categoryRepository});
 
@@ -84,5 +88,13 @@ class ProductListController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
     isTopPanelLoading.value = false;
+  }
+
+  void resetQuery() {
+    searchInputController.value.clear();
+    searchInputController.refresh();
+    selectedCategoryFilter.value = "0";
+    selectedSort.value = ProductRepository.ORDER_BY_NAME_ASC;
+    pagingController.refresh();
   }
 }
