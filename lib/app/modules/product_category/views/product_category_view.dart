@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
 
 import '../controllers/product_category_controller.dart';
 
@@ -20,7 +21,9 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
             padding: const EdgeInsets.only(right: 12),
             child: Obx(() => controller.selectedTab.value == 0
                 ? FilledButton.tonal(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.ADD_PRODUCT);
+                    },
                     child: const Text("Tambah Produk"),
                   )
                 : FilledButton.tonal(

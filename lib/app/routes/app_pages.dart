@@ -10,7 +10,11 @@ import '../modules/label_print/bindings/label_print_binding.dart';
 import '../modules/label_print/views/label_print_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/product_category/add_product/bindings/add_product_binding.dart';
+import '../modules/product_category/add_product/views/add_product_view.dart';
 import '../modules/product_category/bindings/product_category_binding.dart';
+import '../modules/product_category/detail_product/bindings/detail_product_binding.dart';
+import '../modules/product_category/detail_product/views/detail_product_view.dart';
 import '../modules/product_category/views/product_category_view.dart';
 import '../modules/receipt/bindings/receipt_binding.dart';
 import '../modules/receipt/views/receipt_view.dart';
@@ -49,6 +53,18 @@ class AppPages {
       name: _Paths.PRODUCT_CATEGORY,
       page: () => const ProductCategoryView(),
       binding: ProductCategoryBinding(),
+      children: [
+        GetPage(
+          name: _Paths.ADD_PRODUCT,
+          page: () => const AddProductView(),
+          binding: AddProductBinding(),
+        ),
+        GetPage(
+          name: _Paths.DETAIL_PRODUCT,
+          page: () => const DetailProductView(),
+          binding: DetailProductBinding(),
+        ),
+      ],
     ),
     GetPage(
       name: _Paths.LABEL_PRINT,

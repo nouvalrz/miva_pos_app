@@ -13,6 +13,8 @@ abstract class Routes {
   static const EXPENSE = _Paths.EXPENSE;
   static const SETTING = _Paths.SETTING;
   static const SPLASH = _Paths.SPLASH;
+  static const ADD_PRODUCT = _Paths.PRODUCT_CATEGORY + _Paths.ADD_PRODUCT;
+  static const DETAIL_PRODUCT = _Paths.PRODUCT_CATEGORY + _Paths.DETAIL_PRODUCT;
 }
 
 abstract class _Paths {
@@ -27,4 +29,6 @@ abstract class _Paths {
   static const EXPENSE = '/expense';
   static const SETTING = '/setting';
   static const SPLASH = '/splash';
+  static const ADD_PRODUCT = '/add-product';
+  static const DETAIL_PRODUCT = '/detail-product';
 }

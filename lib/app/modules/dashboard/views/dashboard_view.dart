@@ -245,40 +245,40 @@ class TodayReceiptsSummaryCard extends StatelessWidget {
               color: Color(0xFF40228C),
             ),
           ),
-          const Gap(12),
-          Obx(() => Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFF3F1FF),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.circle,
-                            color: Color(0xFF40228C),
-                          ),
-                          title: Text(
-                              '${dashboardController.todayReceiptsCount.value} Struk'),
-                        )),
-                  ),
-                  const Gap(12),
-                  Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFF3F1FF),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.circle,
-                            color: Color(0xFF40228C),
-                          ),
-                          title: Text(
-                              '${dashboardController.todayExpensesCount.value} Pengeluaran'),
-                        )),
-                  ),
-                ],
-              )),
+          // const Gap(12),
+          // Obx(() => Row(
+          //       children: [
+          //         Expanded(
+          //           child: Container(
+          //               decoration: BoxDecoration(
+          //                   color: const Color(0xFFF3F1FF),
+          //                   borderRadius: BorderRadius.circular(12)),
+          //               child: ListTile(
+          //                 leading: const Icon(
+          //                   Icons.circle,
+          //                   color: Color(0xFF40228C),
+          //                 ),
+          //                 title: Text(
+          //                     '${dashboardController.todayReceiptsCount.value} Struk'),
+          //               )),
+          //         ),
+          //         const Gap(12),
+          //         Expanded(
+          //           child: Container(
+          //               decoration: BoxDecoration(
+          //                   color: const Color(0xFFF3F1FF),
+          //                   borderRadius: BorderRadius.circular(12)),
+          //               child: ListTile(
+          //                 leading: const Icon(
+          //                   Icons.circle,
+          //                   color: Color(0xFF40228C),
+          //                 ),
+          //                 title: Text(
+          //                     '${dashboardController.todayExpensesCount.value} Pengeluaran'),
+          //               )),
+          //         ),
+          //       ],
+          //     )),
           const Gap(16),
           Container(
             decoration: BoxDecoration(

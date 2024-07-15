@@ -51,7 +51,7 @@ class CategoryRepository {
       query = '''
         SELECT * FROM $categoriesTable
         WHERE 
-        ${searchKeyword != null && searchKeyword.isNotEmpty ? "($categoriesTable.name LIKE ? AND " : ''}
+        ${searchKeyword != null && searchKeyword.isNotEmpty ? "$categoriesTable.name LIKE ? AND " : ''}
         $categoriesTable.business_id = ?
         $orderQuery
         ${!withoutLimit ? 'LIMIT ? OFFSET ?' : ""}
