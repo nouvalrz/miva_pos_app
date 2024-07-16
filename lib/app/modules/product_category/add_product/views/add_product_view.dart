@@ -1,11 +1,15 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
+import 'package:miva_pos_app/app/utils/currency_formatter.dart';
+import 'package:miva_pos_app/app/utils/currency_validators.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../controllers/add_product_controller.dart';
 
@@ -40,148 +44,178 @@ class AddProductView extends GetView<AddProductController> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Gambar Produk",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xff333333),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const Gap(10),
-                            DottedBorder(
-                              borderType: BorderType.RRect,
-                              strokeWidth: 2,
-                              dashPattern: const [12, 4],
-                              radius: const Radius.circular(12),
-                              color: const Color(0xff40228C),
-                              child: const SizedBox(
-                                width: 300,
-                                height: 300,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesomeIcons.image),
-                                      Text("Pilih Gambar")
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Gap(100),
-                        Flexible(
-                          child: Column(
+                child: FormBuilder(
+                  key: controller.formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Informasi Produk",
+                                "Gambar Produk",
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),
                               ),
                               const Gap(10),
-                              const Text("Nama Produk"),
-                              const Gap(10),
-                              SizedBox(
-                                height: 45,
-                                child: FormBuilderTextField(
-                                  name: 'name',
-                                  decoration: const InputDecoration(
-                                    isDense: true,
-                                    border: OutlineInputBorder(),
+                              DottedBorder(
+                                borderType: BorderType.RRect,
+                                strokeWidth: 2,
+                                dashPattern: const [12, 4],
+                                radius: const Radius.circular(12),
+                                color: const Color(0xff40228C),
+                                child: const SizedBox(
+                                  width: 300,
+                                  height: 300,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(FontAwesomeIcons.image),
+                                        Text("Pilih Gambar")
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                              const Gap(10),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: Column(
+                            ],
+                          ),
+                          const Gap(100),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Informasi Produk",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff333333),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                const Gap(10),
+                                const Text("Nama Produk"),
+                                const Gap(10),
+                                FormBuilderTextField(
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.minLength(4,
+                                        checkNullOrEmpty: true)
+                                  ]),
+                                  name: 'name',
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 10),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                                const Gap(10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Nomor Barcode"),
+                                    const Gap(10),
+                                    Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text("Nomor Barcode"),
-                                        const Gap(10),
-                                        SizedBox(
-                                          height: 45,
+                                        Flexible(
+                                          fit: FlexFit.loose,
                                           child: FormBuilderTextField(
                                             keyboardType: TextInputType.number,
+                                            validator:
+                                                FormBuilderValidators.compose([
+                                              FormBuilderValidators.equalLength(
+                                                  10,
+                                                  checkNullOrEmpty: true,
+                                                  errorText: "Harus 10 digit")
+                                            ]),
                                             name: 'barcode_number',
                                             decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
                                               isDense: true,
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
                                         ),
+                                        const Gap(8),
+                                        SizedBox(
+                                          width: 44,
+                                          height: 44,
+                                          child: FilledButton.icon(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    WidgetStateProperty.all<Color>(
+                                                        const Color(
+                                                            0xff40228C)),
+                                                padding: WidgetStateProperty.all(
+                                                    EdgeInsets.zero),
+                                                alignment: Alignment.center,
+                                                shape: WidgetStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                4)))),
+                                            onPressed: () {},
+                                            label: const FaIcon(
+                                                FontAwesomeIcons.expand),
+                                          ),
+                                        ),
+                                        const Gap(8),
+                                        SizedBox(
+                                          height: 44,
+                                          child: FilledButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStateProperty.all<
+                                                              Color>(
+                                                          const Color(
+                                                              0xffF0DA4E)),
+                                                  shape: WidgetStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4)))),
+                                              onPressed: () {
+                                                controller
+                                                    .generateRandomBarcodeNumber();
+                                              },
+                                              child: controller.isLoading.value
+                                                  ? const CircularProgressIndicator()
+                                                  : const Text(
+                                                      "Generate",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Color(
+                                                              0xff333333)),
+                                                    )),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  const Gap(8),
-                                  SizedBox(
-                                    width: 45,
-                                    height: 45,
-                                    child: FilledButton.icon(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStateProperty.all<Color>(
-                                                  const Color(0xff40228C)),
-                                          padding: WidgetStateProperty.all(
-                                              EdgeInsets.zero),
-                                          alignment: Alignment.center,
-                                          shape: WidgetStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          4)))),
-                                      onPressed: () {},
-                                      label:
-                                          const FaIcon(FontAwesomeIcons.expand),
-                                    ),
-                                  ),
-                                  const Gap(8),
-                                  SizedBox(
-                                    height: 45,
-                                    child: FilledButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStateProperty.all<Color>(
-                                                    const Color(0xffF0DA4E)),
-                                            shape: WidgetStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)))),
-                                        onPressed: () {},
-                                        child: const Text(
-                                          "Generate",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff333333)),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                              const Gap(10),
-                              const Text("Kategori"),
-                              const Gap(10),
-                              SizedBox(
-                                height: 45,
-                                child: GestureDetector(
+                                  ],
+                                ),
+                                const Gap(10),
+                                const Text("Kategori"),
+                                const Gap(10),
+                                FormBuilderTextField(
+                                  validator: FormBuilderValidators.compose(
+                                      [FormBuilderValidators.required()]),
+                                  readOnly: true,
+                                  onTapOutside: (event) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                  },
                                   onTap: () {
                                     showMaterialModalBottomSheet(
                                       shape: const RoundedRectangleBorder(
@@ -192,31 +226,74 @@ class AddProductView extends GetView<AddProductController> {
                                           const PickCategoryBottomSheet(),
                                     );
                                   },
-                                  child: FormBuilderDropdown(
-                                    decoration: const InputDecoration(
+                                  decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 10),
+                                      hintText: "Pilih Kategori",
+                                      hintStyle: TextStyle(fontSize: 14),
                                       isDense: true,
                                       border: OutlineInputBorder(),
-                                    ),
-                                    items: const [],
-                                    name: 'category_id',
-                                  ),
+                                      suffixIcon: Icon(
+                                        Icons.arrow_drop_down_rounded,
+                                        size: 28,
+                                      )),
+                                  name: 'category_id',
                                 ),
-                              ),
-                              const Gap(10),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text("Stok"),
-                                        const Gap(10),
-                                        SizedBox(
-                                          height: 45,
-                                          child: Obx(() => FormBuilderTextField(
+                                const Gap(10),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 100,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Satuan"),
+                                          const Gap(10),
+                                          FormBuilderTextField(
+                                            validator:
+                                                FormBuilderValidators.compose([
+                                              FormBuilderValidators.minLength(1,
+                                                  checkNullOrEmpty: true,
+                                                  errorText: "Min. 1 huruf")
+                                            ]),
+                                            name: 'unit',
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
+                                              isDense: true,
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Gap(12),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Stok"),
+                                          const Gap(10),
+                                          Obx(() => FormBuilderTextField(
+                                                validator:
+                                                    controller.withStock.value
+                                                        ? FormBuilderValidators
+                                                            .compose([
+                                                            FormBuilderValidators.min(
+                                                                0,
+                                                                checkNullOrEmpty:
+                                                                    true,
+                                                                errorText:
+                                                                    "Minimal 0")
+                                                          ])
+                                                        : FormBuilderValidators
+                                                            .compose([]),
                                                 enabled:
                                                     controller.withStock.value,
                                                 keyboardType:
@@ -224,97 +301,162 @@ class AddProductView extends GetView<AddProductController> {
                                                 name: 'stock',
                                                 decoration:
                                                     const InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 10),
                                                   isDense: true,
                                                   border: OutlineInputBorder(),
                                                 ),
                                               )),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(8),
-                                  Obx(() => Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(controller.withStock.value
-                                              ? "Dengan Stok"
-                                              : "Tanpa Stok"),
-                                          const Gap(4),
-                                          Switch(
-                                            // This bool value toggles the switch.
-                                            value: controller.withStock.value,
-                                            activeColor:
-                                                const Color(0xff40228C),
-                                            onChanged: (bool value) {
-                                              // This is called when the user toggles the switch.
-                                              controller.setWithStock(value);
-                                            },
-                                          ),
                                         ],
-                                      ))
-                                ],
-                              ),
-                              const Gap(10),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text("Harga Pokok"),
-                                        const Gap(10),
-                                        SizedBox(
-                                          height: 45,
-                                          child: FormBuilderTextField(
+                                      ),
+                                    ),
+                                    const Gap(8),
+                                    Obx(() => Column(
+                                          children: [
+                                            const Gap(16),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(controller.withStock.value
+                                                    ? "Dengan Stok"
+                                                    : "Tanpa Stok"),
+                                                const Gap(4),
+                                                Switch(
+                                                  // This bool value toggles the switch.
+                                                  value: controller
+                                                      .withStock.value,
+                                                  activeColor:
+                                                      const Color(0xff40228C),
+                                                  onChanged: (bool value) {
+                                                    // This is called when the user toggles the switch.
+                                                    controller
+                                                        .setWithStock(value);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                                const Gap(10),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Harga Pokok"),
+                                          const Gap(10),
+                                          FormBuilderTextField(
+                                            inputFormatters: [
+                                              CurrencyFormatter()
+                                            ],
+                                            validator:
+                                                FormBuilderValidators.compose([
+                                              FormBuilderValidators.required(),
+                                              (val) => currrencyMaxValidator(
+                                                  value: val ?? "0",
+                                                  max: controller
+                                                          .formKey
+                                                          .currentState
+                                                          ?.fields['sale_price']
+                                                          ?.value ??
+                                                      "0")
+
+                                              // (val) => currrencyMinValidator(
+                                              //     val ?? ''),
+                                              // (val) => currrencyMaxValidator(
+                                              //     val ?? '',
+                                              //     int.parse(controller
+                                              //             .formKey
+                                              //             .currentState
+                                              //             ?.fields['sale_price']
+                                              //             ?.value
+                                              //             ?.replaceAll(
+                                              //                 '.', '') ??
+                                              //         "0")),
+                                            ]),
                                             keyboardType: TextInputType.number,
                                             name: 'cost_price',
                                             decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
                                               prefixIcon: Icon(
                                                   FontAwesomeIcons.rupiahSign),
                                               isDense: true,
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const Gap(10),
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text("Harga Jual"),
-                                        const Gap(10),
-                                        SizedBox(
-                                          height: 45,
-                                          child: FormBuilderTextField(
+                                    const Gap(10),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Harga Jual"),
+                                          const Gap(10),
+                                          FormBuilderTextField(
+                                            inputFormatters: [
+                                              // CurrencyFormatter()
+                                              CurrencyFormatter()
+                                            ],
+                                            validator:
+                                                FormBuilderValidators.compose([
+                                              FormBuilderValidators.required(),
+                                              (val) => currrencyMinValidator(
+                                                  value: val ?? "0",
+                                                  min: controller
+                                                          .formKey
+                                                          .currentState
+                                                          ?.fields['cost_price']
+                                                          ?.value ??
+                                                      "0")
+                                              // FormBuilderValidators.min(
+                                              //     int.parse(controller
+                                              //             .formKey
+                                              //             .currentState
+                                              //             ?.fields['sale_price']
+                                              //             ?.value ??
+                                              //         "0")),
+                                            ]),
                                             keyboardType: TextInputType.number,
                                             name: 'sale_price',
                                             decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
                                               prefixIcon: Icon(
                                                   FontAwesomeIcons.rupiahSign),
                                               isDense: true,
                                               border: OutlineInputBorder(),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -328,6 +470,10 @@ class AddProductView extends GetView<AddProductController> {
                 ),
                 onPressed: () {
                   // Aksi ketika tombol ditekan
+                  controller.formKey.currentState?.saveAndValidate();
+
+                  print(
+                      controller.formKey.currentState?.instantValue.toString());
                 },
                 child: const Text("Simpan"),
               ),
@@ -423,25 +569,26 @@ class PickCategoryBottomSheet extends StatelessWidget {
               ],
             ),
             Expanded(
-                child: RefreshIndicator(
-              onRefresh: () async {
-                controller.pagingController.refresh();
-              },
-              child: PagedMasonryGridView.count(
-                padding: const EdgeInsets.only(top: 8),
-                crossAxisCount: 3,
-                crossAxisSpacing: 6,
-                mainAxisSpacing: 6,
-                pagingController: controller.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Category>(
-                    itemBuilder: (context, item, index) {
-                  return Card(
+                child: PagedMasonryGridView.count(
+              padding: const EdgeInsets.only(top: 8),
+              crossAxisCount: 3,
+              crossAxisSpacing: 6,
+              mainAxisSpacing: 6,
+              pagingController: controller.pagingController,
+              builderDelegate: PagedChildBuilderDelegate<Category>(
+                  itemBuilder: (context, item, index) {
+                return InkWell(
+                  onTap: () {
+                    controller.setSelectedCategoryId(
+                        id: item.id, name: item.name);
+                  },
+                  child: Card(
                     child: ListTile(
                       title: Text(item.name),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ))
           ],
         ),

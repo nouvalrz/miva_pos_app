@@ -4,27 +4,26 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/data/repositories/category_repository.dart';
+import 'package:miva_pos_app/app/data/repositories/product_repository.dart';
 import 'package:miva_pos_app/app/modules/home/controllers/home_controller.dart';
+import 'package:miva_pos_app/app/utils/barcode_utils.dart';
 
 class AddProductController extends GetxController {
-  final formKey = GlobalKey<FormBuilderState>();
+  AddProductController(
+      {required this.categoryRepository, required this.productRepository});
 
+  final formKey = GlobalKey<FormBuilderState>();
   Rx<TextEditingController> categorySearchController =
       TextEditingController().obs;
-
   RxBool withStock = false.obs;
-
   final PagingController<int, Category> pagingController =
       PagingController(firstPageKey: 0);
-
   final CategoryRepository categoryRepository;
-
-  AddProductController({required this.categoryRepository});
+  final ProductRepository productRepository;
   final pageSize = 10;
+  RxString selectedCategoryId = "".obs;
 
-  void setWithStock(bool value) {
-    withStock.value = value;
-  }
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -58,4 +57,47 @@ class AddProductController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
   }
+
+  void setWithStock(bool value) {
+    withStock.value = value;
+    formKey.currentState?.fields['stock']?.didChange("");
+  }
+
+  void setSelectedCategoryId({required String id, required String name}) {
+    selectedCategoryId.value = id;
+    formKey.currentState?.fields['category_id']?.didChange(name);
+    Get.back();
+  }
+
+  void pickImage() {}
+
+  void uploadImageToSupabase() {}
+
+  void generateRandomBarcodeNumber() async {
+    isLoading.value = true;
+    try {
+      final HomeController homeController = Get.find<HomeController>();
+      String randomBarcodeNumber = "";
+      int barcodeFoundCount = 1;
+      do {
+        randomBarcodeNumber = generateBarcodeNumber();
+        barcodeFoundCount = await productRepository.getProductByBarcodeNumber(
+            businessId: homeController.loggedInBusiness.id,
+            barcodeNumber: randomBarcodeNumber);
+      } while (barcodeFoundCount > 0);
+      formKey.currentState?.fields['barcode_number']
+          ?.didChange(randomBarcodeNumber);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+    isLoading.value = false;
+  }
+
+  void checkUniqueBarcodeNumber() {}
+
+  void scanExistingBarcode() {}
+
+  void validateProductData() {}
+
+  void addProduct() {}
 }

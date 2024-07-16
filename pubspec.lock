@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  currency_text_input_formatter:
+    dependency: "direct main"
+    description:
+      name: currency_text_input_formatter
+      sha256: d2eed8c7d40520729ac38252368954aba430a7ee510e5d5357e45cde1f6417a6
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
   dotted_border:
     dependency: "direct main"
     description:
@@ -229,6 +237,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.7.0"
+  form_builder_validators:
+    dependency: "direct main"
+    description:
+      name: form_builder_validators
+      sha256: c61ed7b1deecf0e1ebe49e2fa79e3283937c5a21c7e48e3ed9856a4a14e1191a
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.0"
   functions_client:
     dependency: transitive
     description:
