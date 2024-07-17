@@ -101,12 +101,15 @@ class ProductRepository {
   }
 
   Future<Product> createProduct(Product data) async {
+    final lastId = await getLastId();
+    final newId = lastId + 1;
     final results = await db.execute('''
       INSERT INTO
-        $productsTable(business_id, category_id, barcode_number, name, sale_price, cost_price, stock, unit, image_url, created_at)
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, datetime())
+        $productsTable(id, business_id, category_id, barcode_number, name, sale_price, cost_price, stock, unit, image_url, created_at)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime())
       RETURNING *
     ''', [
+      newId,
       data.businessId,
       data.categoryId,
       data.barcodeNumber,
@@ -154,5 +157,11 @@ class ProductRepository {
         "SELECT COUNT(*) as count from $productsTable WHERE business_id = ?",
         [businessId]);
     return results['count'];
+  }
+
+  Future<int> getLastId() async {
+    final result =
+        await db.get('SELECT MAX(id + 0) as last_id FROM $productsTable');
+    return result["last_id"];
   }
 }

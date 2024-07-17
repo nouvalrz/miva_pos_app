@@ -479,23 +479,22 @@ class AddProductView extends GetView<AddProductController> {
               ),
             ),
             const Gap(12),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all<Color>(const Color(0xff40228C)),
-                ),
-                onPressed: () {
-                  // Aksi ketika tombol ditekan
-                  controller.formKey.currentState?.saveAndValidate();
-
-                  print(
-                      controller.formKey.currentState?.instantValue.toString());
-                },
-                child: const Text("Simpan"),
-              ),
-            ),
+            Obx(() => SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                          const Color(0xff40228C)),
+                    ),
+                    onPressed: () {
+                      // Aksi ketika tombol ditekan
+                      controller.addProduct();
+                    },
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator()
+                        : const Text("Simpan"),
+                  ),
+                )),
           ],
         ),
       ),

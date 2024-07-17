@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -7,10 +8,12 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
+import 'package:miva_pos_app/app/data/models/product.dart';
 import 'package:miva_pos_app/app/data/repositories/category_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/product_repository.dart';
 import 'package:miva_pos_app/app/modules/home/controllers/home_controller.dart';
 import 'package:miva_pos_app/app/utils/barcode_utils.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddProductController extends GetxController {
   AddProductController(
@@ -29,7 +32,6 @@ class AddProductController extends GetxController {
   final ImagePicker imagePicker = ImagePicker();
   File? image;
   RxBool isImagePick = false.obs;
-
   RxBool isLoading = false.obs;
 
   @override
@@ -91,7 +93,17 @@ class AddProductController extends GetxController {
     }
   }
 
-  void uploadImageToSupabase() {}
+  Future<String> uploadImageToSupabase() async {
+    final HomeController homeController = Get.find<HomeController>();
+    final String fileName =
+        'public/product-${homeController.loggedInBusiness.id}-${DateTime.now().millisecondsSinceEpoch}.png';
+    await Supabase.instance.client.storage
+        .from('miva_pos_app_product_images')
+        .upload(fileName, image!);
+    return Supabase.instance.client.storage
+        .from('miva_pos_app_product_images')
+        .getPublicUrl(fileName);
+  }
 
   void generateRandomBarcodeNumber() async {
     isLoading.value = true;
@@ -113,11 +125,77 @@ class AddProductController extends GetxController {
     isLoading.value = false;
   }
 
-  void checkUniqueBarcodeNumber() {}
+  Future<bool> isBarcodeNumberUnique(String barcodeNumber) async {
+    final HomeController homeController = Get.find<HomeController>();
+    return await productRepository.getProductByBarcodeNumber(
+            businessId: homeController.loggedInBusiness.id,
+            barcodeNumber: barcodeNumber) <
+        1;
+  }
 
   void scanExistingBarcode() {}
 
-  void validateProductData() {}
+  Future<void> addProduct() async {
+    isLoading.value = true;
+    try {
+      final HomeController homeController = Get.find<HomeController>();
+      String? publicImageUrl;
+      if (!(formKey.currentState?.saveAndValidate() ?? false)) {
+        isLoading.value = false;
 
-  void addProduct() {}
+        return;
+      }
+      if (image != null) {
+        publicImageUrl = await uploadImageToSupabase();
+      }
+
+      Map<String, dynamic> productData = formKey.currentState!.value;
+
+      if (!(await isBarcodeNumberUnique(productData["barcode_number"]))) {
+        formKey.currentState?.fields["barcode_number"]!
+            .invalidate("Barcode sudah digunakan!");
+        isLoading.value = false;
+
+        return;
+      }
+
+      Product storedProduct = await productRepository.createProduct(Product(
+          id: "-",
+          businessId: homeController.loggedInBusiness.id,
+          categoryId: selectedCategoryId.value,
+          barcodeNumber: productData["barcode_number"],
+          name: productData["name"],
+          salePrice: int.parse(
+              productData["sale_price"].toString().replaceAll(".", "")),
+          costPrice: int.parse(
+              productData["cost_price"].toString().replaceAll(".", "")),
+          stock: productData["stock"],
+          unit: productData["unit"],
+          createdAt: DateTime.now(),
+          imageUrl: publicImageUrl,
+          totalSold: 0));
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.success,
+        animType: AnimType.bottomSlide,
+        title: 'Sukses!',
+        desc:
+            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan",
+        btnOkOnPress: () {
+          Get.back();
+        },
+      ).show();
+    } catch (e) {
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.error,
+        animType: AnimType.bottomSlide,
+        title: 'Sorryyyy',
+        desc: e.toString(),
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {},
+      ).show();
+    }
+    isLoading.value = false;
+  }
 }
