@@ -29,10 +29,9 @@ class ExpenseCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Pengeluaran #${expense.id}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                const Text(
+                  "Pengeluaran",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 Text(
                   DateFormat('HH:mm - dd MMM')
