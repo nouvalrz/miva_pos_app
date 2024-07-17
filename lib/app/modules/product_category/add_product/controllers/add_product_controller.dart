@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/data/repositories/category_repository.dart';
@@ -22,6 +26,9 @@ class AddProductController extends GetxController {
   final ProductRepository productRepository;
   final pageSize = 10;
   RxString selectedCategoryId = "".obs;
+  final ImagePicker imagePicker = ImagePicker();
+  File? image;
+  RxBool isImagePick = false.obs;
 
   RxBool isLoading = false.obs;
 
@@ -69,7 +76,20 @@ class AddProductController extends GetxController {
     Get.back();
   }
 
-  void pickImage() {}
+  Future<void> pickImage(ImageSource source) async {
+    isImagePick.value = false;
+    final pickedFile = await imagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 350, maxWidth: 350);
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
+      if (croppedFile != null) {
+        image = File(croppedFile.path);
+        isImagePick.value = true;
+      }
+    }
+  }
 
   void uploadImageToSupabase() {}
 

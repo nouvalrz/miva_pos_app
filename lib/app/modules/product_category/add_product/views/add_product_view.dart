@@ -1,4 +1,3 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -6,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/utils/currency_formatter.dart';
@@ -62,27 +62,45 @@ class AddProductView extends GetView<AddProductController> {
                                     fontWeight: FontWeight.w600),
                               ),
                               const Gap(10),
-                              DottedBorder(
-                                borderType: BorderType.RRect,
-                                strokeWidth: 2,
-                                dashPattern: const [12, 4],
-                                radius: const Radius.circular(12),
-                                color: const Color(0xff40228C),
-                                child: const SizedBox(
-                                  width: 300,
-                                  height: 300,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(FontAwesomeIcons.image),
-                                        Text("Pilih Gambar")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              Obx(() => GestureDetector(
+                                    onTap: () {
+                                      controller.pickImage(ImageSource.camera);
+                                    },
+                                    child: !controller.isImagePick.value
+                                        ? DottedBorder(
+                                            borderType: BorderType.RRect,
+                                            strokeWidth: 2,
+                                            dashPattern: const [12, 4],
+                                            radius: const Radius.circular(12),
+                                            color: const Color(0xff40228C),
+                                            child: const SizedBox(
+                                              width: 300,
+                                              height: 300,
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                        FontAwesomeIcons.image),
+                                                    Text("Pilih Gambar")
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            child: Image.file(
+                                              controller.image!,
+                                              width: 300,
+                                              height: 300,
+                                              scale: 1,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                  )),
                             ],
                           ),
                           const Gap(100),
