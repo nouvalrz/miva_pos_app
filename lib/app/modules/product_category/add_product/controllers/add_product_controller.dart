@@ -157,6 +157,7 @@ class AddProductController extends GetxController {
 
   Future<void> addProduct() async {
     isLoading.value = true;
+    bool imageUploadProblem = false;
     try {
       final HomeController homeController = Get.find<HomeController>();
       String? publicImageUrl;
@@ -169,6 +170,7 @@ class AddProductController extends GetxController {
         if (await InternetConnection().hasInternetAccess) {
           publicImageUrl = await uploadImageToSupabase();
         } else {
+          imageUploadProblem = true;
           isImagePick.value = false;
           image = null;
         }
@@ -194,7 +196,7 @@ class AddProductController extends GetxController {
               productData["sale_price"].toString().replaceAll(".", "")),
           costPrice: int.parse(
               productData["cost_price"].toString().replaceAll(".", "")),
-          stock: productData["stock"],
+          stock: int.parse(productData["stock"]),
           unit: productData["unit"],
           createdAt: DateTime.now(),
           imageUrl: publicImageUrl,
@@ -205,7 +207,7 @@ class AddProductController extends GetxController {
         animType: AnimType.bottomSlide,
         title: 'Sukses!',
         desc:
-            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan! ${image == null ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
+            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan! ${imageUploadProblem ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
         btnOkOnPress: () {
           Get.back();
         },
