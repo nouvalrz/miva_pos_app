@@ -17,6 +17,14 @@ class CategoryRepository {
     return Category.fromRow(results);
   }
 
+  Future<int> getCountCategoryByName(
+      {required String businessId, required String categoryName}) async {
+    final results = await db.get(
+        'SELECT COUNT(*) as count FROM $categoriesTable WHERE business_id = ? AND name LIKE ?',
+        [businessId, categoryName]);
+    return results['count'];
+  }
+
   Future<List<Category>> getAllCategory(
       {required String businessId,
       bool withTotalProduct = false,
@@ -72,8 +80,8 @@ class CategoryRepository {
   Future<Category> createCategory(Category data) async {
     final results = await db.execute('''
       INSERT INTO 
-      categories (business_id, name, created_at)
-      VALUES(?, ?, datetime())
+      categories (id, business_id, name, created_at)
+      VALUES(uuid(), ?, ?, datetime())
       RETURNING *
     ''', [data.businessId, data.name]);
     return Category.fromRow(results.first);

@@ -133,9 +133,10 @@ class AddProductController extends GetxController {
       int barcodeFoundCount = 1;
       do {
         randomBarcodeNumber = generateBarcodeNumber();
-        barcodeFoundCount = await productRepository.getProductByBarcodeNumber(
-            businessId: homeController.loggedInBusiness.id,
-            barcodeNumber: randomBarcodeNumber);
+        barcodeFoundCount =
+            await productRepository.getCountProductByBarcodeNumber(
+                businessId: homeController.loggedInBusiness.id,
+                barcodeNumber: randomBarcodeNumber);
       } while (barcodeFoundCount > 0);
       formKey.currentState?.fields['barcode_number']
           ?.didChange(randomBarcodeNumber);
@@ -147,7 +148,7 @@ class AddProductController extends GetxController {
 
   Future<bool> isBarcodeNumberUnique(String barcodeNumber) async {
     final HomeController homeController = Get.find<HomeController>();
-    return await productRepository.getProductByBarcodeNumber(
+    return await productRepository.getCountProductByBarcodeNumber(
             businessId: homeController.loggedInBusiness.id,
             barcodeNumber: barcodeNumber) <
         1;
@@ -163,7 +164,6 @@ class AddProductController extends GetxController {
       String? publicImageUrl;
       if (!(formKey.currentState?.saveAndValidate() ?? false)) {
         isLoading.value = false;
-
         return;
       }
       if (image != null) {

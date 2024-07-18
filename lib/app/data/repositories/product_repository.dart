@@ -17,7 +17,7 @@ class ProductRepository {
     return Product.fromRow(results);
   }
 
-  Future<int> getProductByBarcodeNumber(
+  Future<int> getCountProductByBarcodeNumber(
       {required String businessId, required String barcodeNumber}) async {
     final results = await db.get(
         'SELECT COUNT(*) as count FROM $productsTable WHERE business_id = ? AND barcode_number = ?',

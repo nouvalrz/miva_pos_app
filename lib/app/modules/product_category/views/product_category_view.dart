@@ -27,7 +27,10 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     child: const Text("Tambah Produk"),
                   )
                 : FilledButton.tonal(
-                    onPressed: () {}, child: const Text("Tambah Kategori"))),
+                    onPressed: () {
+                      Get.toNamed(Routes.ADD_CATEGORY);
+                    },
+                    child: const Text("Tambah Kategori"))),
           )
         ],
         title: Obx(() => Column(
