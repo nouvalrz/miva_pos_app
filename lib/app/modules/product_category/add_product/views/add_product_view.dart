@@ -89,16 +89,32 @@ class AddProductView extends GetView<AddProductController> {
                                               ),
                                             ),
                                           )
-                                        : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Image.file(
-                                              controller.image!,
-                                              width: 300,
-                                              height: 300,
-                                              scale: 1,
-                                              fit: BoxFit.cover,
-                                            ),
+                                        : Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.file(
+                                                  controller.image!,
+                                                  width: 300,
+                                                  height: 300,
+                                                  scale: 1,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              const Gap(8),
+                                              TextButton.icon(
+                                                onPressed: () {
+                                                  controller.removeImage();
+                                                },
+                                                label:
+                                                    const Text("Hapus Gambar"),
+                                                icon: const Icon(
+                                                    FontAwesomeIcons.trashCan),
+                                              )
+                                            ],
                                           ),
                                   )),
                             ],

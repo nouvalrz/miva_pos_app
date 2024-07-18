@@ -108,6 +108,11 @@ class AddProductController extends GetxController {
     }
   }
 
+  void removeImage() {
+    isImagePick.value = false;
+    image = null;
+  }
+
   Future<String> uploadImageToSupabase() async {
     final HomeController homeController = Get.find<HomeController>();
     final String fileName =
