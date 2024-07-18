@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/data/models/product.dart';
 import 'package:miva_pos_app/app/data/repositories/category_repository.dart';
@@ -79,6 +80,20 @@ class AddProductController extends GetxController {
   }
 
   Future<void> pickImage(ImageSource source) async {
+    if (!(await InternetConnection().hasInternetAccess)) {
+      isImagePick.value = false;
+      image = null;
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.warning,
+        animType: AnimType.bottomSlide,
+        title: 'Gambar tidak bisa diupload!',
+        desc:
+            "Maaf saat ini tidak ada internet, anda masih bisa input produk tanpa gambar",
+        btnOkOnPress: () {},
+      ).show();
+      return;
+    }
     isImagePick.value = false;
     final pickedFile = await imagePicker.pickImage(
         source: ImageSource.camera, maxHeight: 350, maxWidth: 350);
@@ -146,7 +161,12 @@ class AddProductController extends GetxController {
         return;
       }
       if (image != null) {
-        publicImageUrl = await uploadImageToSupabase();
+        if (await InternetConnection().hasInternetAccess) {
+          publicImageUrl = await uploadImageToSupabase();
+        } else {
+          isImagePick.value = false;
+          image = null;
+        }
       }
 
       Map<String, dynamic> productData = formKey.currentState!.value;
@@ -180,7 +200,7 @@ class AddProductController extends GetxController {
         animType: AnimType.bottomSlide,
         title: 'Sukses!',
         desc:
-            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan",
+            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan! ${image == null ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
         btnOkOnPress: () {
           Get.back();
         },
