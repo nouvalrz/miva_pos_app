@@ -15,8 +15,8 @@ import '../modules/product_category/add_category/views/add_category_view.dart';
 import '../modules/product_category/add_product/bindings/add_product_binding.dart';
 import '../modules/product_category/add_product/views/add_product_view.dart';
 import '../modules/product_category/bindings/product_category_binding.dart';
-import '../modules/product_category/detail_product/bindings/detail_product_binding.dart';
-import '../modules/product_category/detail_product/views/detail_product_view.dart';
+import '../modules/product_category/edit_product/bindings/edit_product_binding.dart';
+import '../modules/product_category/edit_product/views/edit_product_view.dart';
 import '../modules/product_category/views/product_category_view.dart';
 import '../modules/receipt/bindings/receipt_binding.dart';
 import '../modules/receipt/views/receipt_view.dart';
@@ -62,14 +62,14 @@ class AppPages {
           binding: AddProductBinding(),
         ),
         GetPage(
-          name: _Paths.DETAIL_PRODUCT,
-          page: () => const DetailProductView(),
-          binding: DetailProductBinding(),
-        ),
-        GetPage(
           name: _Paths.ADD_CATEGORY,
           page: () => const AddCategoryView(),
           binding: AddCategoryBinding(),
+        ),
+        GetPage(
+          name: _Paths.EDIT_PRODUCT,
+          page: () => const EditProductView(),
+          binding: EditProductBinding(),
         ),
       ],
     ),

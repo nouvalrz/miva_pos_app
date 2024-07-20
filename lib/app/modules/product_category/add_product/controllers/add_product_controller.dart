@@ -196,7 +196,9 @@ class AddProductController extends GetxController {
               productData["sale_price"].toString().replaceAll(".", "")),
           costPrice: int.parse(
               productData["cost_price"].toString().replaceAll(".", "")),
-          stock: int.parse(productData["stock"]),
+          stock: productData["stock"] != null
+              ? int.parse(productData["stock"])
+              : null,
           unit: productData["unit"],
           createdAt: DateTime.now(),
           imageUrl: publicImageUrl,

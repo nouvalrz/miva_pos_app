@@ -44,6 +44,7 @@ class ProductListView extends GetView {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: RefreshIndicator(
               onRefresh: () async {
+                productListController.getAllCategory();
                 productListController.pagingController.refresh();
               },
               child: PagedMasonryGridView.count(
@@ -133,7 +134,7 @@ class FilterMenuButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4.0), // Sudut border
                   )),
               dropdownStyleData: const DropdownStyleData(
-                maxHeight: 550,
+                maxHeight: 450,
               ),
               value: productListController.selectedCategoryFilter.value,
               onChanged: (value) {

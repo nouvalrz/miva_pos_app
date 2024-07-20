@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
+import 'package:miva_pos_app/app/modules/product_category/controllers/instant_add_category_controller.dart';
 import 'package:miva_pos_app/app/utils/currency_formatter.dart';
 import 'package:miva_pos_app/app/utils/currency_validators.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -569,28 +571,8 @@ class PickCategoryBottomSheet extends StatelessWidget {
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(12))),
-                            builder: (context) => const SizedBox(
-                                  height: 580,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Tambah Kategori"),
-                                        Gap(12),
-                                        SizedBox(
-                                          height: 45,
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                                isDense: true,
-                                                border: OutlineInputBorder()),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ));
+                            builder: (context) =>
+                                const InstantAddCategoryBottomSheet());
                       },
                       child: const Text(
                         "Tambah",
@@ -624,6 +606,81 @@ class PickCategoryBottomSheet extends StatelessWidget {
               }),
             ))
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class InstantAddCategoryBottomSheet extends StatelessWidget {
+  const InstantAddCategoryBottomSheet({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final InstantAddCategoryController controller =
+        Get.find<InstantAddCategoryController>();
+    return SizedBox(
+      height: 580,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: FormBuilder(
+          key: controller.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Tambah Kategori"),
+              const Gap(24),
+              const Text("Nama Kategori"),
+              const Gap(12),
+              FormBuilderTextField(
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.minLength(4, checkNullOrEmpty: true)
+                ]),
+                name: 'name',
+                decoration: const InputDecoration(
+                  isDense: true,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const Gap(12),
+              Obx(() => SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                            const Color(0xff40228C)),
+                      ),
+                      onPressed: () async {
+                        // Aksi ketika tombol ditekan
+                        bool success = await controller.addCategory();
+                        if (success) {
+                          AwesomeDialog(
+                            context: Get.context!,
+                            dialogType: DialogType.success,
+                            animType: AnimType.bottomSlide,
+                            title: 'Sukses!',
+                            desc: "Kategori berhasil ditambahkan!",
+                            btnOkOnPress: () {
+                              final AddProductController
+                                  categoryListController =
+                                  Get.find<AddProductController>();
+                              categoryListController.pagingController.refresh();
+                              Get.back();
+                            },
+                          ).show();
+                        }
+                      },
+                      child: controller.isLoading.value
+                          ? const CircularProgressIndicator()
+                          : const Text("Simpan"),
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );
