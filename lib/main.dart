@@ -11,6 +11,9 @@ import 'package:miva_pos_app/app/services/supabase_service.dart';
 
 import 'app/routes/app_pages.dart';
 
+// Init route observer
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -28,6 +31,7 @@ void main() async {
 
   runApp(
     GetMaterialApp(
+      navigatorObservers: [routeObserver],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

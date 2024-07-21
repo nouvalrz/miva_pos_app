@@ -12,8 +12,9 @@ class ProductRepository {
   static const ORDER_BY_TOTAL_SOLD_ASC = "ORDER BY total_sold ASC";
 
   Future<Product> getProduct({required String id}) async {
-    final results =
-        await db.get('SELECT * FROM $productsTable WHERE id = ?', [id]);
+    final results = await db.get(
+        'SELECT products.*, categories.name as category_name FROM $productsTable LEFT JOIN $categoriesTable ON products.category_id = categories.id WHERE products.id = ?',
+        [id]);
     return Product.fromRow(results);
   }
 

@@ -8,9 +8,38 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:miva_pos_app/app/data/models/product.dart';
 import 'package:miva_pos_app/app/modules/product_category/controllers/product_list_controller.dart';
 import 'package:miva_pos_app/app/modules/product_category/widgets/product_list_card.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
+import 'package:miva_pos_app/main.dart';
 
-class ProductListView extends GetView {
+class ProductListView extends StatefulWidget {
   const ProductListView({super.key});
+
+  @override
+  State<ProductListView> createState() => _ProductListViewState();
+}
+
+class _ProductListViewState extends State<ProductListView> with RouteAware {
+  final ProductListController productListController =
+      Get.find<ProductListController>();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    productListController.getAllCategory();
+    productListController.pagingController.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProductListController productListController =
@@ -54,8 +83,14 @@ class ProductListView extends GetView {
                 pagingController: productListController.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Product>(
                     itemBuilder: (context, item, index) {
-                  return ProductListCard(
-                    item: item,
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.ADD_PRODUCT,
+                          arguments: {'productId': item.id});
+                    },
+                    child: ProductListCard(
+                      item: item,
+                    ),
                   );
                 }),
               ),
@@ -66,6 +101,11 @@ class ProductListView extends GetView {
     );
   }
 }
+
+// class ProductListView extends GetView with RouteAware {
+//   const ProductListView({super.key});
+
+// }
 
 class ProductSearch extends StatelessWidget {
   const ProductSearch({

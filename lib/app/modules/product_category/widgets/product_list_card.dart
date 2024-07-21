@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -15,11 +16,25 @@ class ProductListCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(
-              Icons.rectangle_rounded,
-              size: 35,
-              color: Colors.grey,
-            ),
+            item.imageUrl != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: CachedNetworkImage(
+                      imageUrl: item.imageUrl!,
+                      width: 35,
+                      height: 35,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey,
+                    ),
+                    width: 35,
+                    height: 35,
+                    child: const SizedBox.shrink(),
+                  ),
             const Gap(12),
             Expanded(
               child: Column(

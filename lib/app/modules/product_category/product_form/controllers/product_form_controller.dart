@@ -16,8 +16,8 @@ import 'package:miva_pos_app/app/modules/home/controllers/home_controller.dart';
 import 'package:miva_pos_app/app/utils/barcode_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddProductController extends GetxController {
-  AddProductController(
+class ProductFormController extends GetxController {
+  ProductFormController(
       {required this.categoryRepository, required this.productRepository});
 
   final formKey = GlobalKey<FormBuilderState>();
@@ -33,17 +33,62 @@ class AddProductController extends GetxController {
   final ImagePicker imagePicker = ImagePicker();
   File? image;
   RxBool isImagePick = false.obs;
-  RxBool isLoading = false.obs;
+  RxBool isProcessLoading = false.obs;
+  RxBool isPageLoading = true.obs;
+
+  RxBool isEdit = false.obs;
+  RxBool isImagePickOnEdit = false.obs;
+  Product? currentProduct;
+  Map<String, dynamic>? initialCurrentProductFormData;
 
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments != null && Get.arguments['productId'] != null) {
+      buildEditForm();
+    } else {
+      isPageLoading.value = false;
+    }
     pagingController.addPageRequestListener((pageKey) {
       getAllCategory(pageKey);
     });
     categorySearchController.value.addListener(() {
       pagingController.refresh();
     });
+  }
+
+  Future<void> buildEditForm() async {
+    isPageLoading.value = true;
+    try {
+      await getCurrentProduct();
+      initialCurrentProductFormData = currentProduct!.toMapForForm();
+      if (currentProduct!.imageUrl != null) {
+        isImagePick.value = true;
+      }
+      if (currentProduct!.stock != null) {
+        withStock.value = true;
+      }
+      selectedCategoryId.value = currentProduct!.categoryId;
+    } catch (e) {
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.error,
+        animType: AnimType.bottomSlide,
+        title: 'Sorryyyy',
+        desc: e.toString(),
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {},
+      ).show();
+    }
+    isEdit.value = true;
+    isPageLoading.value = false;
+  }
+
+  Future<void> getCurrentProduct() async {
+    final productId = Get.arguments["productId"];
+    currentProduct =
+        await productRepository.getProduct(id: productId.toString());
+    print(currentProduct!);
   }
 
   Future<void> getAllCategory(pageKey) async {
@@ -75,7 +120,7 @@ class AddProductController extends GetxController {
 
   void setSelectedCategoryId({required String id, required String name}) {
     selectedCategoryId.value = id;
-    formKey.currentState?.fields['category_id']?.didChange(name);
+    formKey.currentState?.fields['category_name']?.didChange(name);
     Get.back();
   }
 
@@ -94,15 +139,19 @@ class AddProductController extends GetxController {
       ).show();
       return;
     }
-    isImagePick.value = false;
+    // isImagePick.value = false;
     final pickedFile = await imagePicker.pickImage(
-        source: ImageSource.camera, maxHeight: 350, maxWidth: 350);
+        source: source, maxHeight: 800, maxWidth: 800);
     if (pickedFile != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: pickedFile.path,
           aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
       if (croppedFile != null) {
+        if (isEdit.value) {
+          isImagePickOnEdit.value = true;
+        }
         image = File(croppedFile.path);
+        isImagePick.value = false;
         isImagePick.value = true;
       }
     }
@@ -126,7 +175,7 @@ class AddProductController extends GetxController {
   }
 
   void generateRandomBarcodeNumber() async {
-    isLoading.value = true;
+    isProcessLoading.value = true;
     try {
       final HomeController homeController = Get.find<HomeController>();
       String randomBarcodeNumber = "";
@@ -143,7 +192,7 @@ class AddProductController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
-    isLoading.value = false;
+    isProcessLoading.value = false;
   }
 
   Future<bool> isBarcodeNumberUnique(String barcodeNumber) async {
@@ -157,13 +206,13 @@ class AddProductController extends GetxController {
   void scanExistingBarcode() {}
 
   Future<void> addProduct() async {
-    isLoading.value = true;
+    isProcessLoading.value = true;
     bool imageUploadProblem = false;
     try {
       final HomeController homeController = Get.find<HomeController>();
       String? publicImageUrl;
       if (!(formKey.currentState?.saveAndValidate() ?? false)) {
-        isLoading.value = false;
+        isProcessLoading.value = false;
         return;
       }
       if (image != null) {
@@ -181,12 +230,13 @@ class AddProductController extends GetxController {
       if (!(await isBarcodeNumberUnique(productData["barcode_number"]))) {
         formKey.currentState?.fields["barcode_number"]!
             .invalidate("Barcode sudah digunakan!");
-        isLoading.value = false;
+        isProcessLoading.value = false;
 
         return;
       }
 
       Product storedProduct = await productRepository.createProduct(Product(
+          categoryName: null,
           id: "-",
           businessId: homeController.loggedInBusiness.id,
           categoryId: selectedCategoryId.value,
@@ -225,6 +275,6 @@ class AddProductController extends GetxController {
         btnOkOnPress: () {},
       ).show();
     }
-    isLoading.value = false;
+    isProcessLoading.value = false;
   }
 }
