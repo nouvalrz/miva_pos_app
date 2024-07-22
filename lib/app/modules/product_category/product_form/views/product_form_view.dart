@@ -17,6 +17,7 @@ import 'package:miva_pos_app/app/modules/product_category/controllers/instant_ad
 import 'package:miva_pos_app/app/utils/currency_formatter.dart';
 import 'package:miva_pos_app/app/utils/currency_validators.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import '../controllers/product_form_controller.dart';
 
 class ProductFormView extends GetView<ProductFormController> {
@@ -339,7 +340,26 @@ class ProductFormView extends GetView<ProductFormController> {
                                                                   borderRadius:
                                                                       BorderRadius.circular(
                                                                           4)))),
-                                                      onPressed: () {},
+                                                      onPressed: () async {
+                                                        var res =
+                                                            await Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          const SimpleBarcodeScannerPage(),
+                                                                ));
+                                                        if (res is String) {
+                                                          if (res != '-1') {
+                                                            controller
+                                                                .formKey
+                                                                .currentState
+                                                                ?.fields[
+                                                                    'barcode_number']!
+                                                                .didChange(res);
+                                                          }
+                                                        }
+                                                      },
                                                       label: const FaIcon(
                                                           FontAwesomeIcons
                                                               .expand),
