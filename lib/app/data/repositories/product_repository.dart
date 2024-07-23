@@ -124,7 +124,6 @@ class ProductRepository {
   Future<Product> updateProduct(Product data) async {
     final results = await db.execute('''
       UPDATE $productsTable SET
-        business_id = ?,
         category_id = ?,
         barcode_number = ?,
         name = ?,
@@ -132,11 +131,10 @@ class ProductRepository {
         cost_price = ?,
         stock = ?,
         unit = ?,
-        image_url = ?,
+        image_url = ?
       WHERE id = ?
       RETURNING *
     ''', [
-      data.businessId,
       data.categoryId,
       data.barcodeNumber,
       data.name,

@@ -84,56 +84,8 @@ class ProductFormView extends GetView<ProductFormController> {
                                                 onTap: () {
                                                   // controller.pickImage(
                                                   //     ImageSource.camera);
-                                                  showMaterialModalBottomSheet(
-                                                      expand: false,
-                                                      context: context,
-                                                      shape: const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.vertical(
-                                                                  top: Radius
-                                                                      .circular(
-                                                                          12))),
-                                                      builder:
-                                                          (context) => SizedBox(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    const Gap(
-                                                                        8),
-                                                                    ListTile(
-                                                                      title: const Text(
-                                                                          "Ambil Kamera"),
-                                                                      leading: const Icon(
-                                                                          FontAwesomeIcons
-                                                                              .camera),
-                                                                      onTap:
-                                                                          () async {
-                                                                        await controller
-                                                                            .pickImage(ImageSource.camera);
-                                                                        Get.back();
-                                                                      },
-                                                                    ),
-                                                                    ListTile(
-                                                                      title: const Text(
-                                                                          "Ambil dari Galeri"),
-                                                                      leading: const Icon(
-                                                                          FontAwesomeIcons
-                                                                              .solidImages),
-                                                                      onTap:
-                                                                          () async {
-                                                                        await controller
-                                                                            .pickImage(ImageSource.gallery);
-                                                                        Get.back();
-                                                                      },
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ));
+                                                  showPickImageBottomSheet(
+                                                      context);
                                                 },
                                                 child: DottedBorder(
                                                   borderType: BorderType.RRect,
@@ -180,7 +132,7 @@ class ProductFormView extends GetView<ProductFormController> {
                                                                         .isEdit
                                                                         .value &&
                                                                     !controller
-                                                                        .isImagePickOnEdit
+                                                                        .isImageChangeOnEdit
                                                                         .value
                                                                 ? CachedNetworkImageProvider(
                                                                     controller
@@ -223,8 +175,8 @@ class ProductFormView extends GetView<ProductFormController> {
                                                   const Gap(8),
                                                   TextButton.icon(
                                                     onPressed: () {
-                                                      controller.pickImage(
-                                                          ImageSource.camera);
+                                                      showPickImageBottomSheet(
+                                                          context);
                                                     },
                                                     label: const Text(
                                                         "Ganti Gambar"),
@@ -298,11 +250,11 @@ class ProductFormView extends GetView<ProductFormController> {
                                                           FormBuilderValidators
                                                               .compose([
                                                         FormBuilderValidators
-                                                            .equalLength(10,
+                                                            .minLength(10,
                                                                 checkNullOrEmpty:
                                                                     true,
                                                                 errorText:
-                                                                    "Harus 10 digit")
+                                                                    "Min. 10 digit")
                                                       ]),
                                                       name: 'barcode_number',
                                                       decoration:
@@ -722,7 +674,7 @@ class ProductFormView extends GetView<ProductFormController> {
                               ),
                               onPressed: () {
                                 // Aksi ketika tombol ditekan
-                                controller.addProduct();
+                                controller.submitProductForm();
                               },
                               child: controller.isProcessLoading.value
                                   ? const CircularProgressIndicator()
@@ -733,6 +685,39 @@ class ProductFormView extends GetView<ProductFormController> {
                   ),
                 ),
         ));
+  }
+
+  void showPickImageBottomSheet(BuildContext context) {
+    showMaterialModalBottomSheet(
+        expand: false,
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
+        builder: (context) => SizedBox(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(8),
+                  ListTile(
+                    title: const Text("Ambil Kamera"),
+                    leading: const Icon(FontAwesomeIcons.camera),
+                    onTap: () async {
+                      await controller.pickImage(ImageSource.camera);
+                      Get.back();
+                    },
+                  ),
+                  ListTile(
+                    title: const Text("Ambil dari Galeri"),
+                    leading: const Icon(FontAwesomeIcons.solidImages),
+                    onTap: () async {
+                      await controller.pickImage(ImageSource.gallery);
+                      Get.back();
+                    },
+                  ),
+                ],
+              ),
+            ));
   }
 }
 

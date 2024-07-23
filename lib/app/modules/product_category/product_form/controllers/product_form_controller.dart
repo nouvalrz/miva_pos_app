@@ -37,7 +37,7 @@ class ProductFormController extends GetxController {
   RxBool isPageLoading = true.obs;
 
   RxBool isEdit = false.obs;
-  RxBool isImagePickOnEdit = false.obs;
+  RxBool isImageChangeOnEdit = false.obs;
   Product? currentProduct;
   Map<String, dynamic>? initialCurrentProductFormData;
 
@@ -148,7 +148,7 @@ class ProductFormController extends GetxController {
           aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1));
       if (croppedFile != null) {
         if (isEdit.value) {
-          isImagePickOnEdit.value = true;
+          isImageChangeOnEdit.value = true;
         }
         image = File(croppedFile.path);
         isImagePick.value = false;
@@ -160,6 +160,7 @@ class ProductFormController extends GetxController {
   void removeImage() {
     isImagePick.value = false;
     image = null;
+    isImageChangeOnEdit.value = true;
   }
 
   Future<String> uploadImageToSupabase() async {
@@ -175,7 +176,31 @@ class ProductFormController extends GetxController {
   }
 
   void generateRandomBarcodeNumber() async {
-    isProcessLoading.value = true;
+    bool shouldProceed = true;
+
+    if (isEdit.value &&
+        currentProduct!.barcodeNumber ==
+            formKey.currentState?.fields['barcode_number']?.value.toString()) {
+      await AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.warning,
+        animType: AnimType.bottomSlide,
+        title: "Konfirmasi",
+        desc:
+            "Sebaiknya hindari mengubah nomor barcode yang sudah ada! Tetap ingin mengganti nomor barcode?",
+        btnCancelOnPress: () {
+          shouldProceed = false;
+        },
+        btnOkOnPress: () {
+          shouldProceed = true;
+        },
+      ).show();
+    }
+
+    if (!shouldProceed) {
+      return;
+    }
+
     try {
       final HomeController homeController = Get.find<HomeController>();
       String randomBarcodeNumber = "";
@@ -203,18 +228,22 @@ class ProductFormController extends GetxController {
         1;
   }
 
-  void scanExistingBarcode() {}
+  bool isFormFieldsValid() {
+    return formKey.currentState?.saveAndValidate() ?? false;
+  }
 
-  Future<void> addProduct() async {
+  Future<void> submitProductForm() async {
     isProcessLoading.value = true;
     bool imageUploadProblem = false;
     try {
-      final HomeController homeController = Get.find<HomeController>();
-      String? publicImageUrl;
-      if (!(formKey.currentState?.saveAndValidate() ?? false)) {
+      // form fields validation
+      if (!(isFormFieldsValid())) {
         isProcessLoading.value = false;
         return;
       }
+
+      // upload image
+      String? publicImageUrl;
       if (image != null) {
         if (await InternetConnection().hasInternetAccess) {
           publicImageUrl = await uploadImageToSupabase();
@@ -225,45 +254,36 @@ class ProductFormController extends GetxController {
         }
       }
 
+      // get all form data
       Map<String, dynamic> productData = formKey.currentState!.value;
 
-      if (!(await isBarcodeNumberUnique(productData["barcode_number"]))) {
-        formKey.currentState?.fields["barcode_number"]!
-            .invalidate("Barcode sudah digunakan!");
-        isProcessLoading.value = false;
-
-        return;
+      // check uniqueness of barcode number
+      // will be checked if edit = true and barcode not same like original
+      // or will be checked if edit = false
+      if ((isEdit.value &&
+              currentProduct!.barcodeNumber !=
+                  formKey.currentState?.fields['barcode_number']?.value
+                      .toString()) ||
+          !isEdit.value) {
+        if (!(await isBarcodeNumberUnique(productData["barcode_number"]))) {
+          formKey.currentState?.fields["barcode_number"]!
+              .invalidate("Barcode sudah digunakan!");
+          isProcessLoading.value = false;
+          return;
+        }
       }
 
-      Product storedProduct = await productRepository.createProduct(Product(
-          categoryName: null,
-          id: "-",
-          businessId: homeController.loggedInBusiness.id,
-          categoryId: selectedCategoryId.value,
-          barcodeNumber: productData["barcode_number"],
-          name: productData["name"],
-          salePrice: int.parse(
-              productData["sale_price"].toString().replaceAll(".", "")),
-          costPrice: int.parse(
-              productData["cost_price"].toString().replaceAll(".", "")),
-          stock: productData["stock"] != null
-              ? int.parse(productData["stock"])
-              : null,
-          unit: productData["unit"],
-          createdAt: DateTime.now(),
-          imageUrl: publicImageUrl,
-          totalSold: 0));
-      AwesomeDialog(
-        context: Get.context!,
-        dialogType: DialogType.success,
-        animType: AnimType.bottomSlide,
-        title: 'Sukses!',
-        desc:
-            "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan! ${imageUploadProblem ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
-        btnOkOnPress: () {
-          Get.back();
-        },
-      ).show();
+      if (!isEdit.value) {
+        await addProduct(
+            productData: productData,
+            publicImageUrl: publicImageUrl,
+            imageUploadProblem: imageUploadProblem);
+      } else {
+        await editProduct(
+            productData: productData,
+            publicImageUrl: publicImageUrl,
+            imageUploadProblem: imageUploadProblem);
+      }
     } catch (e) {
       AwesomeDialog(
         context: Get.context!,
@@ -276,5 +296,79 @@ class ProductFormController extends GetxController {
       ).show();
     }
     isProcessLoading.value = false;
+  }
+
+  Future<void> addProduct(
+      {required Map<String, dynamic> productData,
+      String? publicImageUrl,
+      required bool imageUploadProblem}) async {
+    final HomeController homeController = Get.find<HomeController>();
+    Product storedProduct = await productRepository.createProduct(Product(
+        categoryName: null,
+        id: "-",
+        businessId: homeController.loggedInBusiness.id,
+        categoryId: selectedCategoryId.value,
+        barcodeNumber: productData["barcode_number"],
+        name: productData["name"],
+        salePrice:
+            int.parse(productData["sale_price"].toString().replaceAll(".", "")),
+        costPrice:
+            int.parse(productData["cost_price"].toString().replaceAll(".", "")),
+        stock: productData["stock"] != null
+            ? int.parse(productData["stock"])
+            : null,
+        unit: productData["unit"],
+        createdAt: DateTime.now(),
+        imageUrl: publicImageUrl,
+        totalSold: 0));
+    AwesomeDialog(
+      context: Get.context!,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
+      title: 'Sukses!',
+      desc:
+          "Produk barcode #${storedProduct.barcodeNumber} berhasil ditambahkan! ${imageUploadProblem ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
+      btnOkOnPress: () {
+        Get.back();
+      },
+    ).show();
+  }
+
+  Future<void> editProduct(
+      {required Map<String, dynamic> productData,
+      String? publicImageUrl,
+      required bool imageUploadProblem}) async {
+    final HomeController homeController = Get.find<HomeController>();
+    Product updatedProduct = await productRepository.updateProduct(Product(
+        categoryName: null,
+        id: currentProduct!.id,
+        businessId: homeController.loggedInBusiness.id,
+        categoryId: selectedCategoryId.value,
+        barcodeNumber: productData["barcode_number"],
+        name: productData["name"],
+        salePrice:
+            int.parse(productData["sale_price"].toString().replaceAll(".", "")),
+        costPrice:
+            int.parse(productData["cost_price"].toString().replaceAll(".", "")),
+        stock: productData["stock"] != null && productData["stock"] != ""
+            ? int.parse(productData["stock"])
+            : null,
+        unit: productData["unit"],
+        createdAt: DateTime.now(),
+        imageUrl: isImageChangeOnEdit.value
+            ? publicImageUrl
+            : currentProduct!.imageUrl!,
+        totalSold: 0));
+    AwesomeDialog(
+      context: Get.context!,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
+      title: 'Sukses!',
+      desc:
+          "Produk barcode #${updatedProduct.barcodeNumber} berhasil diperbarui! ${imageUploadProblem ? 'Namun gambar tidak bisa di-upload, karena tidak ada internet. Anda bisa upload pada menu Update Produk ketika sudah ada internet ya!' : ''}",
+      btnOkOnPress: () {
+        Get.back();
+      },
+    ).show();
   }
 }
