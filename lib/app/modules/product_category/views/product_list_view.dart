@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
@@ -48,6 +49,12 @@ class _ProductListViewState extends State<ProductListView> with RouteAware {
       color: Colors.white,
       child: Column(
         children: [
+          BarcodeKeyboardListener(
+              child: const SizedBox.shrink(),
+              onBarcodeScanned: (String barcode) {
+                productListController.searchInputController.value.text =
+                    barcode;
+              }),
           Obx(() => productListController.isTopPanelLoading.value
               ? LoadingAnimationWidget.prograssiveDots(
                   color: const Color(0xff40228C), size: 36)

@@ -13,22 +13,24 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Row(
-      children: [
-        Obx(() => SizedBox(
-            width: 220,
-            child: controller.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
-                : const MivaV2Navigation())),
-        // const VerticalDivider(
-        //   width: 0.7,
-        // ),
-        Expanded(
-            child: Obx(() => LazyLoadIndexedStack(
-                  index: controller.selectedPage.value,
-                  children: controller.pages,
-                )))
-      ],
-    ));
+        body: Obx(() => controller.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : Row(
+                children: [
+                  SizedBox(
+                      width: 220,
+                      child: controller.isLoading.value
+                          ? const Center(child: CircularProgressIndicator())
+                          : const MivaV2Navigation()),
+                  // const VerticalDivider(
+                  //   width: 0.7,
+                  // ),
+                  Expanded(
+                      child: Obx(() => LazyLoadIndexedStack(
+                            index: controller.selectedPage.value,
+                            children: controller.pages,
+                          )))
+                ],
+              )));
   }
 }

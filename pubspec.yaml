@@ -40,6 +40,7 @@ dependencies:
   cached_network_image: ^3.3.1
   insta_image_viewer: ^1.0.4
   simple_barcode_scanner: ^0.1.1
+  flutter_barcode_listener: ^0.1.4
 
 dev_dependencies:
   flutter_lints: 4.0.0

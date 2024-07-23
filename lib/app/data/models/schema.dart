@@ -34,7 +34,9 @@ const schema = Schema([
     Column.integer('cash_given'),
     Column.integer('cash_change'),
     Column.integer('total_profit'),
-    Column.text('created_at')
+    Column.text('created_at'),
+    Column.integer('is_archived'),
+    Column.text('old_receipt_of'),
   ], indexes: [
     Index("receipts_business_id_idx", [IndexedColumn('business_id')]),
     Index("receipts_receipt_number_idx", [IndexedColumn('receipt_number')]),
@@ -129,5 +131,15 @@ const schema = Schema([
     Column.text('created_at')
   ], indexes: [
     Index("expenses_business_id_idx", [IndexedColumn('business_id')]),
+  ]),
+  Table('product_stock_managements', [
+    Column.text('user_id'),
+    Column.text('product_id'),
+    Column.text('created_at'),
+    Column.integer('adjustment_amount'),
+    Column.text('notes'),
+    Column.integer('before'),
+    Column.integer('after'),
+    Column.text('business_id')
   ])
 ]);

@@ -46,8 +46,10 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value = true;
     await getUser();
     await getBusiness();
+    isLoading.value = false;
     DashboardBinding().dependencies();
   }
 
@@ -70,16 +72,16 @@ class HomeController extends GetxController {
   }
 
   Future<void> getUser() async {
-    isLoading.value = true;
+    // isLoading.value = true;
     loggedInUser = await userRepository
         .getUserByAuthUserId(supabaseInstance.auth.currentSession!.user.id);
-    isLoading.value = false;
+    // isLoading.value = false;
   }
 
   Future<void> getBusiness() async {
-    isLoading.value = true;
+    // isLoading.value = true;
     loggedInBusiness =
         await businessRepository.getBusiness(loggedInUser.businessId);
-    isLoading.value = false;
+    // isLoading.value = false;
   }
 }
