@@ -93,4 +93,17 @@ class CategoryRepository {
         [businessId]);
     return results['count'];
   }
+
+  Future<Category> updateCategory(Category data) async {
+    final results = await db.execute('''
+      UPDATE $categoriesTable SET
+        name = ?
+      WHERE id = ?
+      RETURNING *
+    ''', [
+      data.name,
+      data.id,
+    ]);
+    return Category.fromRow(results.first);
+  }
 }

@@ -1,11 +1,13 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/modules/product_category/controllers/category_list_controller.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
 
 class CategoryListView extends GetView {
   const CategoryListView({super.key});
@@ -80,6 +82,14 @@ class CategoryListView extends GetView {
                     },
                     child: Card(
                       child: ListTile(
+                        contentPadding: EdgeInsets.zero.copyWith(left: 12),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Get.toNamed(Routes.ADD_CATEGORY,
+                                arguments: {'categoryId': item.id});
+                          },
+                        ),
                         title: Text(item.name,
                             style:
                                 const TextStyle(fontWeight: FontWeight.w600)),

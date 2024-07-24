@@ -22,4 +22,13 @@ class Category {
         createdAt: DateTime.parse(row["created_at"]),
         totalProduct: row["total_product"]);
   }
+
+  Map<String, dynamic> toMapForForm() {
+    return {
+      "id": id,
+      "business_id": businessId,
+      "name": name,
+      "created_at": createdAt
+    };
+  }
 }

@@ -88,7 +88,6 @@ class ProductFormController extends GetxController {
     final productId = Get.arguments["productId"];
     currentProduct =
         await productRepository.getProduct(id: productId.toString());
-    print(currentProduct!);
   }
 
   Future<void> getAllCategory(pageKey) async {
