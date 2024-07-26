@@ -50,6 +50,7 @@ class _ProductListViewState extends State<ProductListView> with RouteAware {
       child: Column(
         children: [
           BarcodeKeyboardListener(
+              bufferDuration: const Duration(milliseconds: 200),
               child: const SizedBox.shrink(),
               onBarcodeScanned: (String barcode) {
                 productListController.searchInputController.value.text =

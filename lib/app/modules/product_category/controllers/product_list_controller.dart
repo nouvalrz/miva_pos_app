@@ -11,14 +11,13 @@ import 'package:miva_pos_app/app/data/repositories/product_repository.dart';
 import 'package:miva_pos_app/app/modules/home/controllers/home_controller.dart';
 
 class ProductListController extends GetxController {
-  Rx<TextEditingController> searchInputController = TextEditingController().obs;
-
   final pageSize = 10;
   final ProductRepository productRepository;
   final CategoryRepository categoryRepository;
 
   final TextEditingController categoryFilterController =
       TextEditingController();
+  Rx<TextEditingController> searchInputController = TextEditingController().obs;
   final TextEditingController sortController = TextEditingController();
 
   ProductListController(
@@ -32,8 +31,8 @@ class ProductListController extends GetxController {
     ProductRepository.ORDER_BY_TOTAL_SOLD_ASC: "Penjualan Terkecil"
   };
 
-  RxString selectedCategoryFilter = "0".obs;
   RxString selectedSort = ProductRepository.ORDER_BY_NAME_ASC.obs;
+  RxString selectedCategoryFilter = "0".obs;
 
   final PagingController<int, Product> pagingController =
       PagingController(firstPageKey: 0);

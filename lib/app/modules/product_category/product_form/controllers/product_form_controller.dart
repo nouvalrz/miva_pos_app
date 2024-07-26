@@ -356,7 +356,7 @@ class ProductFormController extends GetxController {
         createdAt: DateTime.now(),
         imageUrl: isImageChangeOnEdit.value
             ? publicImageUrl
-            : currentProduct!.imageUrl!,
+            : currentProduct!.imageUrl,
         totalSold: 0));
     AwesomeDialog(
       context: Get.context!,

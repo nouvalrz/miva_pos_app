@@ -8,6 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/modules/product_category/controllers/category_list_controller.dart';
 import 'package:miva_pos_app/app/routes/app_pages.dart';
+import 'package:miva_pos_app/app/widgets/miva_card.dart';
 
 class CategoryListView extends GetView {
   const CategoryListView({super.key});
@@ -80,7 +81,7 @@ class CategoryListView extends GetView {
                     onTap: () {
                       categoryListController.goToProductList(item.id);
                     },
-                    child: Card(
+                    child: MivaCard.outline(
                       child: ListTile(
                         contentPadding: EdgeInsets.zero.copyWith(left: 12),
                         trailing: IconButton(

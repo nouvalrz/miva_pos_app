@@ -15,6 +15,7 @@ class Product {
   final DateTime createdAt;
   final String? categoryName;
   final int? totalSold;
+  int receiptQuantity = 1;
 
   Product(
       {required this.id,

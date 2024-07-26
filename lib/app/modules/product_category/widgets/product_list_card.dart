@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:miva_pos_app/app/data/models/product.dart';
+import 'package:miva_pos_app/app/widgets/miva_card.dart';
 
 class ProductListCard extends StatelessWidget {
   const ProductListCard({super.key, required this.item});
   final Product item;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
+    return MivaCard.outline(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -28,7 +28,7 @@ class ProductListCard extends StatelessWidget {
                   )
                 : Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(2),
                       color: Colors.grey,
                     ),
                     width: 35,

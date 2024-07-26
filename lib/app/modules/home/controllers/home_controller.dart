@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ import 'package:miva_pos_app/app/modules/label_print/bindings/label_print_bindin
 import 'package:miva_pos_app/app/modules/label_print/views/label_print_view.dart';
 import 'package:miva_pos_app/app/modules/product_category/bindings/product_category_binding.dart';
 import 'package:miva_pos_app/app/modules/product_category/views/product_category_view.dart';
+import 'package:miva_pos_app/app/modules/receipt/bindings/receipt_binding.dart';
+import 'package:miva_pos_app/app/modules/receipt/controllers/receipt_controller.dart';
 import 'package:miva_pos_app/app/modules/receipt/views/receipt_view.dart';
 import 'package:miva_pos_app/app/modules/report/bindings/report_binding.dart';
 import 'package:miva_pos_app/app/modules/report/views/report_view.dart';
@@ -53,7 +56,30 @@ class HomeController extends GetxController {
     DashboardBinding().dependencies();
   }
 
-  void onDrawerItemTapped(index) {
+  void onDrawerItemTapped(index) async {
+    if (selectedPage.value == 6 && index.toInt() != 6) {
+      final ReceiptController receiptController = Get.find<ReceiptController>();
+      if (receiptController.receiptProducts.isNotEmpty) {
+        bool shouldProceed = false;
+        await AwesomeDialog(
+          context: Get.context!,
+          dialogType: DialogType.warning,
+          animType: AnimType.bottomSlide,
+          title: "Konfirmasi",
+          desc: "Jika pindah halaman, maka data kasir akan hilang, yakin?",
+          btnCancelOnPress: () {
+            shouldProceed = false;
+          },
+          btnOkOnPress: () {
+            shouldProceed = true;
+          },
+        ).show();
+        if (!shouldProceed) {
+          return;
+        }
+        receiptController.receiptProducts.clear();
+      }
+    }
     selectedPage.value = index;
     switch (index) {
       case 0:
@@ -68,7 +94,10 @@ class HomeController extends GetxController {
         ExpenseBinding().dependencies();
       case 5:
         SettingBinding().dependencies();
+      case 6:
+        ReceiptBinding().dependencies();
     }
+    sideMenuController.changePage(index);
   }
 
   Future<void> getUser() async {

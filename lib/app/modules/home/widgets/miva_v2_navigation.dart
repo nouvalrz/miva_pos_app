@@ -17,49 +17,49 @@ class MivaV2Navigation extends StatelessWidget {
           icon: const Icon(Icons.dashboard),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Produk & Kategori",
           icon: const Icon(Icons.category),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Cetak Label",
           icon: const Icon(Icons.print),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Laporan",
           icon: const Icon(Icons.book),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Pengeluaran",
           icon: const Icon(Icons.outbox_rounded),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Pengaturan",
           icon: const Icon(Icons.settings),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Buka Kasir",
           icon: const Icon(Icons.receipt),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
     ];
 
@@ -69,28 +69,28 @@ class MivaV2Navigation extends StatelessWidget {
           icon: const Icon(Icons.dashboard),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Produk & Kategori",
           icon: const Icon(Icons.category),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Cetak Label",
           icon: const Icon(Icons.print),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
           title: "Buka Kasir",
           icon: const Icon(Icons.receipt),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
-            homeController.sideMenuController.changePage(index);
+            // homeController.sideMenuController.changePage(index);
           }),
     ];
 
