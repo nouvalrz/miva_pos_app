@@ -306,9 +306,26 @@ class ReceiptView extends GetView<ReceiptController> {
                       ),
                       onPressed: () {
                         // Aksi ketika tombol ditekan
-                        Get.toNamed(Routes.RECEIPT_CONFIRMATION, arguments: {
-                          'receiptProducts': controller.receiptProducts.value
-                        });
+                        if (controller.receiptProducts.isNotEmpty) {
+                          Get.toNamed(Routes.RECEIPT_CONFIRMATION, arguments: {
+                            'receiptProducts': controller.receiptProducts.value
+                          });
+                        } else {
+                          Get.snackbar(
+                            "Notifikasi",
+                            "Produk masih kosong!",
+                            backgroundColor: const Color(0xffF0DA4E),
+                            boxShadows: [
+                              BoxShadow(
+                                color: const Color.fromARGB(0, 96, 96, 96)
+                                    .withOpacity(1),
+                                offset: const Offset(0, 3),
+                                blurRadius: 8,
+                                spreadRadius: 1,
+                              )
+                            ],
+                          );
+                        }
                       },
                       child: const Text(
                         "Checkout",

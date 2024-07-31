@@ -15,6 +15,8 @@ import 'package:miva_pos_app/app/data/models/receipt_product.dart';
 import 'package:miva_pos_app/app/data/repositories/payment_method_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/receipt_repository.dart';
 import 'package:miva_pos_app/app/modules/home/controllers/home_controller.dart';
+import 'package:miva_pos_app/app/modules/receipt/controllers/receipt_controller.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
 
 class ReceiptConfirmationController extends GetxController {
   final PaymentMethodRepository paymentMethodRepository;
@@ -242,17 +244,23 @@ class ReceiptConfirmationController extends GetxController {
           receiptAdditionalFees: receiptAdditionalFeeList,
           receiptProducts: receiptProductList,
           receiptDiscounts: receiptDiscountList);
-      AwesomeDialog(
-        context: Get.context!,
-        dialogType: DialogType.success,
-        animType: AnimType.bottomSlide,
-        title: 'Sukses',
-        desc:
-            "Struk dengan nomor ${storedReceipt.receiptNumber} berhasil di simpan",
-        btnOkOnPress: () {
-          Get.back();
-        },
-      ).show();
+
+      final ReceiptController receiptController = Get.find<ReceiptController>();
+      receiptController.receiptProducts.clear();
+
+      Get.offNamed(Routes.RECEIPT_SUCCESS,
+          arguments: {"receipt": storedReceipt});
+      // AwesomeDialog(
+      //   context: Get.context!,
+      //   dialogType: DialogType.success,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Sukses',
+      //   desc:
+      //       "Struk dengan nomor ${storedReceipt.receiptNumber} berhasil di simpan",
+      //   btnOkOnPress: () {
+      //     Get.back();
+      //   },
+      // ).show();
       isProcessLoading.value = false;
       return true;
     } catch (e) {

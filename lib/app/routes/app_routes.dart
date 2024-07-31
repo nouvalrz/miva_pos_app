@@ -19,6 +19,7 @@ abstract class Routes {
   static const EDIT_PRODUCT = _Paths.PRODUCT_CATEGORY + _Paths.EDIT_PRODUCT;
   static const RECEIPT_CONFIRMATION =
       _Paths.RECEIPT + _Paths.RECEIPT_CONFIRMATION;
+  static const RECEIPT_SUCCESS = _Paths.RECEIPT + _Paths.RECEIPT_SUCCESS;
 }
 
 abstract class _Paths {
@@ -38,4 +39,5 @@ abstract class _Paths {
   static const ADD_CATEGORY = '/add-category';
   static const EDIT_PRODUCT = '/edit-product';
   static const RECEIPT_CONFIRMATION = '/receipt-confirmation';
+  static const RECEIPT_SUCCESS = '/receipt-success';
 }

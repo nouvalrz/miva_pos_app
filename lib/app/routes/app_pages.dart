@@ -19,6 +19,8 @@ import '../modules/product_category/views/product_category_view.dart';
 import '../modules/receipt/bindings/receipt_binding.dart';
 import '../modules/receipt/receipt_confirmation/bindings/receipt_confirmation_binding.dart';
 import '../modules/receipt/receipt_confirmation/views/receipt_confirmation_view.dart';
+import '../modules/receipt/receipt_success/bindings/receipt_success_binding.dart';
+import '../modules/receipt/receipt_success/views/receipt_success_view.dart';
 import '../modules/receipt/views/receipt_view.dart';
 import '../modules/report/bindings/report_binding.dart';
 import '../modules/report/views/report_view.dart';
@@ -82,6 +84,11 @@ class AppPages {
             name: _Paths.RECEIPT_CONFIRMATION,
             page: () => const ReceiptConfirmationView(),
             binding: ReceiptConfirmationBinding(),
+            transition: Transition.cupertino),
+        GetPage(
+            name: _Paths.RECEIPT_SUCCESS,
+            page: () => const ReceiptSuccessView(),
+            binding: ReceiptSuccessBinding(),
             transition: Transition.cupertino),
       ],
     ),
