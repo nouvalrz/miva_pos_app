@@ -6,13 +6,15 @@ class Receipt {
   final String userId;
   final String paymentMethodId;
   final String receiptNumber;
-  final int totalPrice;
+  final int totalProductPrice;
+  final int totalDiscountPrice;
+  final int totalAdditionalFeePrice;
   final int totalBill;
   final int cashGiven;
   final int cashChange;
   final int totalProfit;
   final DateTime createdAt;
-  final String? firstProductName;
+  String? firstProductName = "";
   final int? productsCount;
 
   Receipt(
@@ -21,7 +23,9 @@ class Receipt {
       required this.userId,
       required this.paymentMethodId,
       required this.receiptNumber,
-      required this.totalPrice,
+      required this.totalProductPrice,
+      required this.totalDiscountPrice,
+      required this.totalAdditionalFeePrice,
       required this.totalBill,
       required this.cashGiven,
       required this.cashChange,
@@ -37,12 +41,14 @@ class Receipt {
         userId: row["user_id"].toString(),
         paymentMethodId: row["payment_method_id"].toString(),
         receiptNumber: row["receipt_number"],
-        totalPrice: row["total_price"],
+        totalProductPrice: row["total_product_price"],
+        totalDiscountPrice: row["total_discount_price"],
+        totalAdditionalFeePrice: row["total_additional_fee_price"],
         totalBill: row["total_bill"],
         cashGiven: row["cash_given"],
         cashChange: row["cash_change"],
         totalProfit: row["total_profit"],
-        createdAt: DateTime.parse(row["created_at"] + "Z"),
+        createdAt: DateTime.parse(row["created_at"]),
         firstProductName: row["first_product_name"],
         productsCount: row["products_count"]);
   }

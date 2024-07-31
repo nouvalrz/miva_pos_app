@@ -31,12 +31,15 @@ class ExpenseCard extends StatelessWidget {
               children: [
                 const Text(
                   "Pengeluaran",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: TextStyle(
+                      fontFamily: "Inter",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
                 ),
                 Text(
                   DateFormat('HH:mm - dd MMM')
                       .format(expense.createdAt.toLocal()),
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontFamily: "Inter", fontSize: 15),
                 ),
               ],
             ),
@@ -46,12 +49,14 @@ class ExpenseCard extends StatelessWidget {
               children: [
                 Text(
                   expense.name,
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontFamily: "Inter", fontSize: 15),
                 ),
                 Text(
                   "- ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(expense.amount)}",
                   style: const TextStyle(
-                      color: Color.fromARGB(255, 187, 39, 39), fontSize: 15),
+                      fontFamily: "Inter",
+                      color: Color.fromARGB(255, 187, 39, 39),
+                      fontSize: 15),
                 ),
               ],
             ),

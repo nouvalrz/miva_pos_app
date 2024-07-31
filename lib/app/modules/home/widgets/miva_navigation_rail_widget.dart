@@ -16,7 +16,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Dashboard',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -25,7 +25,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Produk & Kategori',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -34,7 +34,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Cetak Label',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -43,7 +43,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Laporan',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -52,7 +52,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Pengeluaran',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -61,7 +61,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Pengaturan',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
     ];
@@ -73,7 +73,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Dashboard',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -82,7 +82,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         label: Text(
           'Produk & Kategori',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
       const NavigationRailDestination(
@@ -91,7 +91,7 @@ class MivaNavigationRailWidget extends StatelessWidget {
         selectedIcon: Icon(Icons.print),
         label: Text(
           'Cetak Label',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontFamily: "Inter", fontSize: 16),
         ),
       ),
     ];

@@ -7,7 +7,7 @@ import "package:rxdart/streams.dart";
 class TransactionRepository {
   Stream<List<dynamic>> watchTodayTransactions(String businessId) {
     final receiptsStream = db.watch('''
-    SELECT $receiptsTable.*, (SELECT $productsTable.name FROM $productsTable LEFT JOIN $receiptProductsTable ON products.id = $receiptProductsTable.id WHERE $receiptProductsTable.receipt_id = ? LIMIT 1) as first_product_name, (SELECT COUNT(DISTINCT $receiptProductsTable.product_id)) as products_count FROM $receiptsTable INNER JOIN $receiptProductsTable ON $receiptsTable.id = $receiptProductsTable.receipt_id WHERE DATE($receiptsTable.created_at) = DATE('now') GROUP BY $receiptsTable.id;
+    SELECT $receiptsTable.*, (SELECT $productsTable.name FROM $productsTable LEFT JOIN $receiptProductsTable ON products.id = $receiptProductsTable.product_id WHERE $receiptProductsTable.receipt_id = $receiptsTable.id LIMIT 1) as first_product_name, (SELECT COUNT(DISTINCT $receiptProductsTable.product_id)) as products_count FROM $receiptsTable INNER JOIN $receiptProductsTable ON $receiptsTable.id = $receiptProductsTable.receipt_id WHERE $receiptsTable.business_id = ? AND DATE($receiptsTable.created_at) = DATE('now') GROUP BY $receiptsTable.id;
     ''', parameters: [businessId]).map((results) {
       return results.map((result) => Receipt.fromRow(result)).toList();
     });

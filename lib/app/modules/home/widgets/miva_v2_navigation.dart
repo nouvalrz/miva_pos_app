@@ -113,7 +113,9 @@ class MivaV2Navigation extends StatelessWidget {
                     Text(
                       homeController.loggedInUser.name,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 15),
+                          fontFamily: "Inter",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15),
                     ),
                     const Gap(4),
                     Badge(
@@ -123,7 +125,8 @@ class MivaV2Navigation extends StatelessWidget {
                       textColor: const Color(0xff333333),
                       label: Text(
                         homeController.loggedInUser.role.capitalizeFirst!,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                            fontFamily: "Inter", fontWeight: FontWeight.w600),
                       ),
                     )
                   ],
@@ -148,9 +151,10 @@ class MivaV2Navigation extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
           displayMode: SideMenuDisplayMode.open,
           toggleColor: const Color(0xFFBEB7F6),
-          selectedTitleTextStyle:
-              const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          selectedTitleTextStyle: const TextStyle(
+              fontFamily: "Inter", fontSize: 16, fontWeight: FontWeight.w600),
           unselectedTitleTextStyle: const TextStyle(
+              fontFamily: "Inter",
               color: Color(0xFF333333),
               fontSize: 16,
               fontWeight: FontWeight.w500),

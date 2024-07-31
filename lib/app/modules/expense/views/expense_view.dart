@@ -16,7 +16,7 @@ class ExpenseView extends GetView<ExpenseController> {
       body: const Center(
         child: Text(
           'ExpenseView is working',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontFamily: "Inter", fontSize: 20),
         ),
       ),
     );

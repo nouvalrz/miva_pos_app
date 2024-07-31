@@ -65,7 +65,7 @@ class LoginView extends GetView<LoginController> {
                     children: [
                       const Text(
                         "Masuk Akun",
-                        style: TextStyle(fontSize: 22),
+                        style: TextStyle(fontFamily: "Inter", fontSize: 22),
                       ),
                       const Gap(25),
                       TextFormField(

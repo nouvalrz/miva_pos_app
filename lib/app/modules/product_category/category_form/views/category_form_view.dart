@@ -26,7 +26,8 @@ class CategoryFormView extends GetView<CategoryFormController> {
           ),
           title: Obx(() => Text(
                 controller.isEdit.value ? 'Edit Kategori' : 'Tambah Kategori',
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(
+                    fontFamily: "Inter", color: Colors.white, fontSize: 18),
               )),
           backgroundColor: const Color(0xFF40228C),
           iconTheme: const IconThemeData(color: Colors.white),
@@ -54,6 +55,7 @@ class CategoryFormView extends GetView<CategoryFormController> {
                               const Text(
                                 "Informasi Kategori",
                                 style: TextStyle(
+                                    fontFamily: "Inter",
                                     fontSize: 16,
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),

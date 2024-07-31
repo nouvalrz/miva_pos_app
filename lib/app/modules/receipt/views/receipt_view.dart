@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:miva_pos_app/app/data/models/product.dart';
 import 'package:miva_pos_app/app/modules/product_category/widgets/product_list_card.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
 
 import 'package:miva_pos_app/app/widgets/miva_card.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -33,12 +34,14 @@ class ReceiptView extends GetView<ReceiptController> {
             const Text(
               'Kasir',
               style: TextStyle(
+                  fontFamily: "Inter",
                   color: Colors.white,
                   fontSize: 19,
                   fontWeight: FontWeight.bold),
             ),
             Obx(() => Text(controller.currentTime.value,
-                style: const TextStyle(color: Colors.white, fontSize: 15)))
+                style: const TextStyle(
+                    fontFamily: "Inter", color: Colors.white, fontSize: 15)))
           ],
         ),
         centerTitle: false,
@@ -63,6 +66,7 @@ class ReceiptView extends GetView<ReceiptController> {
                           const Text(
                             "List Barang",
                             style: TextStyle(
+                              fontFamily: "Inter",
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -138,6 +142,7 @@ class ReceiptView extends GetView<ReceiptController> {
                   const Text(
                     "Rangkuman",
                     style: TextStyle(
+                      fontFamily: "Inter",
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -159,104 +164,138 @@ class ReceiptView extends GetView<ReceiptController> {
                                     ? const Center(
                                         child: Text("Produk masih kosong"),
                                       )
-                                    : ListView.builder(
-                                        controller: controller
-                                            .summaryReceiptScrollController,
-                                        itemBuilder: (context, index) {
-                                          final receiptProduct =
-                                              controller.receiptProducts[index];
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  receiptProduct.name,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                        "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(receiptProduct.salePrice)} x${receiptProduct.receiptQuantity}"),
-                                                    Text(NumberFormat.currency(
-                                                            locale: 'id',
-                                                            symbol: 'Rp',
-                                                            decimalDigits: 0)
-                                                        .format(receiptProduct
-                                                                .salePrice *
-                                                            receiptProduct
-                                                                .receiptQuantity)),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        itemCount:
-                                            controller.receiptProducts.length,
+                                    : RawScrollbar(
+                                        thickness: 5,
+                                        radius: const Radius.circular(12),
+                                        thumbColor: const Color(0xffD9D9D9),
+                                        thumbVisibility: true,
+                                        child: ListView.builder(
+                                          controller: controller
+                                              .summaryReceiptScrollController,
+                                          itemBuilder: (context, index) {
+                                            final receiptProduct = controller
+                                                .receiptProducts[index];
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 16),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    receiptProduct.name,
+                                                    style: const TextStyle(
+                                                        fontFamily: "Inter",
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(receiptProduct.salePrice)} x${receiptProduct.receiptQuantity}",
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 16),
+                                                        child: Text(
+                                                            NumberFormat.currency(
+                                                                    locale:
+                                                                        'id',
+                                                                    symbol:
+                                                                        'Rp',
+                                                                    decimalDigits:
+                                                                        0)
+                                                                .format(receiptProduct
+                                                                        .salePrice *
+                                                                    receiptProduct
+                                                                        .receiptQuantity),
+                                                            style: const TextStyle(
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400)),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          itemCount:
+                                              controller.receiptProducts.length,
+                                        ),
                                       ))),
-                            const Gap(6),
-                            Divider(
-                              color: Colors.grey.withOpacity(0.25),
-                              height: 0,
-                            ),
-                            const Gap(6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Total Barang :",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Obx(() => Text(
-                                      controller.totalQuantity.value.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            const Gap(8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Total Harga :",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Obx(() => Text(
-                                      NumberFormat.currency(
-                                              locale: 'id',
-                                              symbol: 'Rp',
-                                              decimalDigits: 0)
-                                          .format(controller.totalPrice.value),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                              ],
-                            ),
                             const Gap(8),
                           ],
                         ),
                       ),
                     ),
                   )),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: MivaCard.filled(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Jumlah Item",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Obx(() => Text(
+                                  controller.totalQuantity.value.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700),
+                                ))
+                          ],
+                        ),
+                      )),
+                      Expanded(
+                          child: MivaCard.filled(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Subtotal Harga",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Obx(() => Text(
+                                  NumberFormat.currency(
+                                          locale: 'id',
+                                          symbol: 'Rp',
+                                          decimalDigits: 0)
+                                      .format(controller.totalPrice.value),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700),
+                                ))
+                          ],
+                        ),
+                      )),
+                    ],
+                  ),
                   const Gap(6),
                   SizedBox(
                     width: double.infinity,
@@ -267,10 +306,16 @@ class ReceiptView extends GetView<ReceiptController> {
                       ),
                       onPressed: () {
                         // Aksi ketika tombol ditekan
+                        Get.toNamed(Routes.RECEIPT_CONFIRMATION, arguments: {
+                          'receiptProducts': controller.receiptProducts.value
+                        });
                       },
                       child: const Text(
                         "Checkout",
-                        style: TextStyle(fontWeight: FontWeight.w800),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w700),
                       ),
                     ),
                   )
@@ -331,7 +376,9 @@ class PickedReceiptProductCard extends StatelessWidget {
                 Text(
                   product.name,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 15),
+                      fontFamily: "Inter",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15),
                 ),
                 const Gap(4),
                 Row(
@@ -391,11 +438,13 @@ class PickedReceiptProductCard extends StatelessWidget {
                         if (product.stock != null)
                           Text(
                             "Sisa stok : ${product.stock!}",
-                            style: const TextStyle(fontSize: 13),
+                            style: const TextStyle(
+                                fontFamily: "Inter", fontSize: 13),
                           ),
                         Text(
                           "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(product.salePrice)} x${product.receiptQuantity}",
-                          style: const TextStyle(fontSize: 13),
+                          style: const TextStyle(
+                              fontFamily: "Inter", fontSize: 13),
                         ),
                       ],
                     )
@@ -407,7 +456,8 @@ class PickedReceiptProductCard extends StatelessWidget {
           Text(
             NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0)
                 .format(product.salePrice * product.receiptQuantity),
-            style: const TextStyle(fontWeight: FontWeight.w600),
+            style: const TextStyle(
+                fontFamily: "Inter", fontWeight: FontWeight.w600),
           ),
           const Gap(4),
           IconButton(
@@ -464,6 +514,7 @@ class UnpickedReceiptProductCard extends StatelessWidget {
                     child: const Text(
                       "Pilih Barang >",
                       style: TextStyle(
+                          fontFamily: "Inter",
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
                           color: Color(0xff40228C)),
@@ -473,7 +524,7 @@ class UnpickedReceiptProductCard extends StatelessWidget {
           ),
           const Text(
             "Rp 0",
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontFamily: "Inter", fontWeight: FontWeight.w600),
           ),
           const Gap(4),
           IconButton(
@@ -507,7 +558,10 @@ class UnpickedReceiptProductCard extends StatelessWidget {
             children: [
               const Text(
                 "Pilih Produk",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                style: TextStyle(
+                    fontFamily: "Inter",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
               ),
               Obx(() => controller.isTopPanelLoading.value
                   ? LoadingAnimationWidget.prograssiveDots(
@@ -591,7 +645,8 @@ class ProductSearch extends StatelessWidget {
                           },
                           icon: const Icon(Icons.cancel_outlined))
                       : null,
-                  labelStyle: const TextStyle(fontSize: 14)),
+                  labelStyle:
+                      const TextStyle(fontFamily: "Inter", fontSize: 14)),
             )),
       ),
     );
@@ -635,7 +690,8 @@ class FilterMenuButton extends StatelessWidget {
                         value: item.key,
                         child: Text(
                           item.value,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontFamily: "Inter", fontSize: 14),
                         ),
                       ))
                   .toList(),

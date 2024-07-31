@@ -24,7 +24,7 @@ class Expense {
       name: row["name"],
       amount: row["amount"],
       description: row["description"],
-      createdAt: DateTime.parse(row["created_at"] + "Z"),
+      createdAt: DateTime.parse(row["created_at"]),
     );
   }
 }

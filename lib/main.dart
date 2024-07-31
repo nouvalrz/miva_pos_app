@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,54 +32,92 @@ void main() async {
   final bool isLoggedInStatus = isLoggedIn();
 
   runApp(
-    GetMaterialApp(
-      navigatorObservers: [routeObserver],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        FormBuilderLocalizations.delegate
-      ],
-      supportedLocales: const [
-        Locale('en', 'US'), // English
-        Locale('id', 'ID'), // Indonesian
-      ],
-      title: "Application",
-      initialRoute:
-          isLoggedInStatus ? AppPages.WITH_SESSION : AppPages.WITHOUT_SESSION,
-      getPages: AppPages.routes,
-      debugShowCheckedModeBanner: false,
-      theme: mivaTheme(),
+    DevicePreview(
+      enabled: false,
+      builder: (context) => GetMaterialApp(
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
+        navigatorObservers: [routeObserver],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          FormBuilderLocalizations.delegate
+        ],
+        supportedLocales: const [
+          Locale('en', 'US'), // English
+          Locale('id', 'ID'), // Indonesian
+        ],
+        title: "Application",
+        initialRoute:
+            isLoggedInStatus ? AppPages.WITH_SESSION : AppPages.WITHOUT_SESSION,
+        getPages: AppPages.routes,
+        debugShowCheckedModeBanner: false,
+        theme: mivaTheme(),
+      ),
     ),
   );
 }
 
 //TODO : Move
 ThemeData mivaTheme() {
-  var baseTextTheme = GoogleFonts.interTextTheme();
+  final ThemeData defaultTheme = ThemeData.light();
 
-  var mivaTextTheme = baseTextTheme.copyWith(
-    displayLarge: baseTextTheme.displayLarge?.copyWith(letterSpacing: 0.0),
-    displayMedium: baseTextTheme.displayMedium?.copyWith(letterSpacing: 0.0),
-    displaySmall: baseTextTheme.displaySmall?.copyWith(letterSpacing: 0.0),
-    headlineLarge: baseTextTheme.headlineLarge?.copyWith(letterSpacing: 0.0),
-    headlineMedium: baseTextTheme.headlineMedium?.copyWith(letterSpacing: 0.0),
-    headlineSmall: baseTextTheme.headlineSmall?.copyWith(letterSpacing: 0.0),
-    titleLarge: baseTextTheme.titleLarge?.copyWith(letterSpacing: 0.0),
-    titleMedium: baseTextTheme.titleMedium?.copyWith(letterSpacing: 0.0),
-    titleSmall: baseTextTheme.titleSmall?.copyWith(letterSpacing: 0.0),
-    bodyLarge: baseTextTheme.bodyLarge?.copyWith(letterSpacing: 0.0),
-    bodyMedium: baseTextTheme.bodyMedium?.copyWith(letterSpacing: 0.0),
-    bodySmall: baseTextTheme.bodySmall?.copyWith(letterSpacing: 0.0),
-    labelLarge: baseTextTheme.labelLarge?.copyWith(letterSpacing: 0.0),
-    labelMedium: baseTextTheme.labelMedium?.copyWith(letterSpacing: 0.0),
-    labelSmall: baseTextTheme.labelSmall?.copyWith(letterSpacing: 0.0),
+  // Buat TextTheme baru dengan letterSpacing: 0
+  final TextTheme adjustedTextTheme = defaultTheme.textTheme.copyWith(
+    bodyLarge: defaultTheme.textTheme.bodyLarge?.copyWith(letterSpacing: 0),
+    bodyMedium: defaultTheme.textTheme.bodyMedium?.copyWith(letterSpacing: 0),
+    bodySmall: defaultTheme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
+    titleLarge: defaultTheme.textTheme.titleLarge?.copyWith(letterSpacing: 0),
+    titleMedium: defaultTheme.textTheme.titleMedium?.copyWith(letterSpacing: 0),
+    titleSmall: defaultTheme.textTheme.titleSmall?.copyWith(letterSpacing: 0),
+    labelLarge: defaultTheme.textTheme.labelLarge?.copyWith(letterSpacing: 0),
+    labelMedium: defaultTheme.textTheme.labelMedium?.copyWith(letterSpacing: 0),
+    labelSmall: defaultTheme.textTheme.labelSmall?.copyWith(letterSpacing: 0),
+    headlineLarge:
+        defaultTheme.textTheme.headlineLarge?.copyWith(letterSpacing: 0),
+    headlineMedium:
+        defaultTheme.textTheme.headlineMedium?.copyWith(letterSpacing: 0),
+    headlineSmall:
+        defaultTheme.textTheme.headlineSmall?.copyWith(letterSpacing: 0),
+    displayLarge:
+        defaultTheme.textTheme.displayLarge?.copyWith(letterSpacing: 0),
+    displayMedium:
+        defaultTheme.textTheme.displayMedium?.copyWith(letterSpacing: 0),
+    displaySmall:
+        defaultTheme.textTheme.displaySmall?.copyWith(letterSpacing: 0),
   );
 
-  var mivaTheme = ThemeData(
-    colorSchemeSeed: const Color(0xFF40228C),
-    textTheme: mivaTextTheme,
-  );
+  // Terapkan TextTheme yang telah dimodifikasi ke ThemeData
+  return ThemeData(
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.white,
+      disabledColor: const Color.fromARGB(255, 255, 255, 255),
+      selectedColor: const Color(0xffF3F1FF),
+      secondarySelectedColor: const Color(0xffF3F1FF),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+        side: BorderSide(color: Colors.grey.shade300),
+      ),
+      labelStyle: const TextStyle(
+        color: Colors.black, // Pastikan warna teks hitam
+        fontSize: 16.0,
+        fontWeight: FontWeight.w500,
+      ),
+      secondaryLabelStyle: const TextStyle(
+        color: Colors.black, // Pastikan warna teks hitam
+        fontSize: 16.0,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
 
-  return mivaTheme;
+    textTheme: adjustedTextTheme,
+    primaryTextTheme: adjustedTextTheme,
+    fontFamily: 'Inter', // Pastikan ini sesuai dengan font yang Anda gunakan
+    // Salin properti lain dari defaultTheme jika diperlukan
+    colorScheme: defaultTheme.colorScheme,
+    // ... properti tema lainnya
+  );
 }

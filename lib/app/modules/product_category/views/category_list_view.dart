@@ -53,7 +53,8 @@ class CategoryListView extends GetView {
                                   value: item.key,
                                   child: Text(
                                     item.value,
-                                    style: const TextStyle(fontSize: 14),
+                                    style: const TextStyle(
+                                        fontFamily: "Inter", fontSize: 14),
                                   ),
                                 ))
                             .toList(),
@@ -92,8 +93,9 @@ class CategoryListView extends GetView {
                           },
                         ),
                         title: Text(item.name,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w600)),
+                            style: const TextStyle(
+                                fontFamily: "Inter",
+                                fontWeight: FontWeight.w600)),
                         subtitle: Text(
                             "Total produk : ${item.totalProduct!.toString()}"),
                       ),
@@ -146,7 +148,8 @@ class CategorySearch extends StatelessWidget {
                           },
                           icon: const Icon(Icons.cancel_outlined))
                       : null,
-                  labelStyle: const TextStyle(fontSize: 14)),
+                  labelStyle:
+                      const TextStyle(fontFamily: "Inter", fontSize: 14)),
             )),
       ),
     );

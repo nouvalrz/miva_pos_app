@@ -19,7 +19,7 @@ class CurrencyFormatter extends TextInputFormatter {
     final newText = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
 
     // Parse the number
-    final number = int.parse(newText);
+    final number = int.tryParse(newText) ?? 0;
 
     // Format the number with thousands separators
     final formatter = NumberFormat.currency(

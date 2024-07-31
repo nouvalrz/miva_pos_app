@@ -16,7 +16,7 @@ class LabelPrintView extends GetView<LabelPrintController> {
       body: const Center(
         child: Text(
           'LabelPrintView is working',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontFamily: "Inter", fontSize: 20),
         ),
       ),
     );

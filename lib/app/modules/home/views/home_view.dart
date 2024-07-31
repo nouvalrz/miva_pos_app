@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -26,9 +27,24 @@ class HomeView extends GetView<HomeController> {
                   //   width: 0.7,
                   // ),
                   Expanded(
-                      child: Obx(() => LazyLoadIndexedStack(
-                            index: controller.selectedPage.value,
-                            children: controller.pages,
+                      child: Obx(() => PageTransitionSwitcher(
+                            transitionBuilder: (Widget child,
+                                Animation<double> primaryAnimation,
+                                Animation<double> secondaryAnimation) {
+                              return SharedAxisTransition(
+                                animation: primaryAnimation,
+                                secondaryAnimation: secondaryAnimation,
+                                transitionType:
+                                    SharedAxisTransitionType.horizontal,
+                                child: child,
+                              );
+                            },
+                            duration: const Duration(milliseconds: 300),
+                            child: LazyLoadIndexedStack(
+                              key: ValueKey<int>(controller.selectedPage.value),
+                              index: controller.selectedPage.value,
+                              children: controller.pages,
+                            ),
                           )))
                 ],
               )));

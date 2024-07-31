@@ -151,7 +151,8 @@ class ProductSearch extends StatelessWidget {
                           },
                           icon: const Icon(Icons.cancel_outlined))
                       : null,
-                  labelStyle: const TextStyle(fontSize: 14)),
+                  labelStyle:
+                      const TextStyle(fontFamily: "Inter", fontSize: 14)),
             )),
       ),
     );
@@ -196,7 +197,8 @@ class FilterMenuButton extends StatelessWidget {
                         value: item.key,
                         child: Text(
                           item.value,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontFamily: "Inter", fontSize: 14),
                         ),
                       ))
                   .toList(),
@@ -244,7 +246,8 @@ class SortMenuButton extends StatelessWidget {
                         value: item.key,
                         child: Text(
                           item.value,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontFamily: "Inter", fontSize: 14),
                         ),
                       ))
                   .toList(),

@@ -10,14 +10,15 @@ import '../modules/label_print/bindings/label_print_binding.dart';
 import '../modules/label_print/views/label_print_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/product_category/bindings/product_category_binding.dart';
 import '../modules/product_category/category_form/bindings/category_form_binding.dart';
 import '../modules/product_category/category_form/views/category_form_view.dart';
 import '../modules/product_category/product_form/bindings/product_form_binding.dart';
 import '../modules/product_category/product_form/views/product_form_view.dart';
-import '../modules/product_category/bindings/product_category_binding.dart';
-
 import '../modules/product_category/views/product_category_view.dart';
 import '../modules/receipt/bindings/receipt_binding.dart';
+import '../modules/receipt/receipt_confirmation/bindings/receipt_confirmation_binding.dart';
+import '../modules/receipt/receipt_confirmation/views/receipt_confirmation_view.dart';
 import '../modules/receipt/views/receipt_view.dart';
 import '../modules/report/bindings/report_binding.dart';
 import '../modules/report/views/report_view.dart';
@@ -76,6 +77,13 @@ class AppPages {
       name: _Paths.RECEIPT,
       page: () => const ReceiptView(),
       binding: ReceiptBinding(),
+      children: [
+        GetPage(
+            name: _Paths.RECEIPT_CONFIRMATION,
+            page: () => const ReceiptConfirmationView(),
+            binding: ReceiptConfirmationBinding(),
+            transition: Transition.cupertino),
+      ],
     ),
     GetPage(
       name: _Paths.REPORT,

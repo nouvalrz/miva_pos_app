@@ -31,12 +31,14 @@ class ReceiptCard extends StatelessWidget {
                 Text(
                   "Struk #${receipt.receiptNumber}",
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                      fontFamily: "Inter",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
                 ),
                 Text(
                   DateFormat('HH:mm - dd MMM')
                       .format(receipt.createdAt.toLocal()),
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontFamily: "Inter", fontSize: 15),
                 ),
               ],
             ),
@@ -49,12 +51,14 @@ class ReceiptCard extends StatelessWidget {
                       (receipt.productsCount! > 1
                           ? " dan ${receipt.productsCount! - 1} lainnya"
                           : ""),
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontFamily: "Inter", fontSize: 15),
                 ),
                 Text(
                   "+ ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(receipt.totalBill)}",
                   style: const TextStyle(
-                      color: Color.fromARGB(255, 46, 131, 49), fontSize: 15),
+                      fontFamily: "Inter",
+                      color: Color.fromARGB(255, 46, 131, 49),
+                      fontSize: 15),
                 ),
               ],
             ),

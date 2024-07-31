@@ -41,6 +41,7 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                       ? "Kelola Produk"
                       : "Kelola Kategori",
                   style: const TextStyle(
+                      fontFamily: "Inter",
                       color: Colors.white,
                       fontSize: 19,
                       fontWeight: FontWeight.bold),
@@ -49,10 +50,14 @@ class ProductCategoryView extends GetView<ProductCategoryController> {
                     controller.selectedTab.value == 0
                         ? "Total semua : ${controller.productsCount.value} Produk"
                         : "Total semua : ${controller.categoriesCount.value} Kategori",
-                    style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    style: const TextStyle(
+                        fontFamily: "Inter",
+                        color: Colors.white,
+                        fontSize: 15)),
               ],
             )),
         backgroundColor: const Color(0xFF40228C),
+        centerTitle: false,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(40),
           child: SizedBox(

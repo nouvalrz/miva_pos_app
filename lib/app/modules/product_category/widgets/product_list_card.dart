@@ -42,7 +42,8 @@ class ProductListCard extends StatelessWidget {
                 children: [
                   Text(
                     item.name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontFamily: "Inter", fontWeight: FontWeight.w600),
                   ),
                   Row(
                     children: [
@@ -53,7 +54,9 @@ class ProductListCard extends StatelessWidget {
                       Text(
                         item.barcodeNumber,
                         style: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 12),
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12),
                       ),
                     ],
                   ),
@@ -74,7 +77,8 @@ class ProductListCard extends StatelessWidget {
                         NumberFormat.currency(
                                 locale: 'id', symbol: 'Rp', decimalDigits: 0)
                             .format(item.salePrice),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                            fontFamily: "Inter", fontWeight: FontWeight.w600),
                       ),
                       const Icon(
                         Icons.delete_outline_outlined,

@@ -16,7 +16,7 @@ class ReportView extends GetView<ReportController> {
       body: const Center(
         child: Text(
           'ReportView is working',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontFamily: "Inter", fontSize: 20),
         ),
       ),
     );

@@ -55,16 +55,22 @@ class DashboardView extends GetView<DashboardController> {
                                     Text(
                                       homeController.loggedInBusiness.name,
                                       style: const TextStyle(
+                                        fontFamily: "Inter",
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    Text(
-                                      homeController.loggedInBusiness.address,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
+                                    SizedBox(
+                                      width: 420,
+                                      child: Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        homeController.loggedInBusiness.address,
+                                        style: const TextStyle(
+                                          fontFamily: "Inter",
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -143,6 +149,7 @@ class DashboardView extends GetView<DashboardController> {
                                         const Text(
                                           "Transaksi Hari Ini",
                                           style: TextStyle(
+                                            fontFamily: "Inter",
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -151,7 +158,9 @@ class DashboardView extends GetView<DashboardController> {
                                           onPressed: () {},
                                           child: const Text(
                                             "Lihat Semua",
-                                            style: TextStyle(fontSize: 14),
+                                            style: TextStyle(
+                                                fontFamily: "Inter",
+                                                fontSize: 14),
                                           ),
                                         ),
                                       ],
@@ -234,6 +243,7 @@ class TodayReceiptsSummaryCard extends StatelessWidget {
           const Text(
             "Ringkasan Hari Ini",
             style: TextStyle(
+              fontFamily: "Inter",
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -242,6 +252,7 @@ class TodayReceiptsSummaryCard extends StatelessWidget {
           Text(
             DateFormat('d MMMM yyyy', 'id_ID').format(DateTime.now()),
             style: const TextStyle(
+              fontFamily: "Inter",
               color: Color(0xFF40228C),
             ),
           ),

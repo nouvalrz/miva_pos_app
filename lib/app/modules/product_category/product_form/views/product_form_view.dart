@@ -40,7 +40,8 @@ class ProductFormView extends GetView<ProductFormController> {
           ),
           title: Obx(() => Text(
                 controller.isEdit.value ? "Edit Produk" : 'Tambah Produk',
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(
+                    fontFamily: "Inter", color: Colors.white, fontSize: 18),
               )),
           backgroundColor: const Color(0xFF40228C),
           iconTheme: const IconThemeData(color: Colors.white),
@@ -74,6 +75,7 @@ class ProductFormView extends GetView<ProductFormController> {
                                         const Text(
                                           "Gambar Produk",
                                           style: TextStyle(
+                                              fontFamily: "Inter",
                                               fontSize: 16,
                                               color: Color(0xff333333),
                                               fontWeight: FontWeight.w600),
@@ -207,6 +209,7 @@ class ProductFormView extends GetView<ProductFormController> {
                                           const Text(
                                             "Informasi Produk",
                                             style: TextStyle(
+                                                fontFamily: "Inter",
                                                 fontSize: 16,
                                                 color: Color(0xff333333),
                                                 fontWeight: FontWeight.w600),
@@ -344,6 +347,8 @@ class ProductFormView extends GetView<ProductFormController> {
                                                             : const Text(
                                                                 "Generate",
                                                                 style: TextStyle(
+                                                                    fontFamily:
+                                                                        "Inter",
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600,
@@ -388,8 +393,9 @@ class ProductFormView extends GetView<ProductFormController> {
                                                         horizontal: 12,
                                                         vertical: 10),
                                                 hintText: "Pilih Kategori",
-                                                hintStyle:
-                                                    TextStyle(fontSize: 14),
+                                                hintStyle: TextStyle(
+                                                    fontFamily: "Inter",
+                                                    fontSize: 14),
                                                 isDense: true,
                                                 border: OutlineInputBorder(),
                                                 suffixIcon: Icon(
@@ -752,7 +758,8 @@ class PickCategoryBottomSheet extends StatelessWidget {
                             prefixIcon: Icon(Icons.search),
                             border: OutlineInputBorder(),
                             labelText: 'Cari nama kategori',
-                            labelStyle: TextStyle(fontSize: 14)),
+                            labelStyle:
+                                TextStyle(fontFamily: "Inter", fontSize: 14)),
                       )),
                 ),
                 const Gap(12),
@@ -778,6 +785,7 @@ class PickCategoryBottomSheet extends StatelessWidget {
                       child: const Text(
                         "Tambah",
                         style: TextStyle(
+                            fontFamily: "Inter",
                             fontWeight: FontWeight.w600,
                             color: Color(0xff333333)),
                       )),

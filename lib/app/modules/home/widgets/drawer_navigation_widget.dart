@@ -117,7 +117,8 @@ class DrawerNaigationWidget extends StatelessWidget {
                   leading: const Icon(Icons.circle),
                   title: Text(
                     homeController.loggedInUser.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontFamily: "Inter", fontWeight: FontWeight.bold),
                   ),
                   subtitle: Container(
                     margin: const EdgeInsets.only(top: 6),

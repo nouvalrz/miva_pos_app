@@ -29,7 +29,7 @@ const schema = Schema([
     Column.text('user_id'),
     Column.text('payment_method_id'),
     Column.text('receipt_number'),
-    Column.integer('total_price'),
+    Column.integer('total_product_price'),
     Column.integer('total_bill'),
     Column.integer('cash_given'),
     Column.integer('cash_change'),
@@ -37,6 +37,8 @@ const schema = Schema([
     Column.text('created_at'),
     Column.integer('is_archived'),
     Column.text('old_receipt_of'),
+    Column.integer('total_discount_price'),
+    Column.integer('total_additional_fee_price')
   ], indexes: [
     Index("receipts_business_id_idx", [IndexedColumn('business_id')]),
     Index("receipts_receipt_number_idx", [IndexedColumn('receipt_number')]),
