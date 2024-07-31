@@ -50,6 +50,16 @@ dependencies:
   animated_toggle_switch: ^0.8.2
   toggle_switch: ^2.3.0
   animated_emoji: ^3.1.0
+  esc_pos_utils_plus:
+    path: vendor/esc_pos_utils_plus
+  print_bluetooth_thermal:
+    path: vendor/print_bluetooth_thermal
+
+dependency_overrides:
+  esc_pos_utils_plus:
+    path: vendor/esc_pos_utils_plus
+  print_bluetooth_thermal:
+    path: vendor/print_bluetooth_thermal
 
 dev_dependencies:
   flutter_lints: 4.0.0
