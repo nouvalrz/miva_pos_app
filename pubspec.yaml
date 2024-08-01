@@ -50,6 +50,7 @@ dependencies:
   animated_toggle_switch: ^0.8.2
   toggle_switch: ^2.3.0
   animated_emoji: ^3.1.0
+  shared_preferences: ^2.3.0
   esc_pos_utils_plus:
     path: vendor/esc_pos_utils_plus
   print_bluetooth_thermal:

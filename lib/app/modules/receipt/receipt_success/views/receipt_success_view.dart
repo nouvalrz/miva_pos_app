@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:miva_pos_app/app/modules/pick_printer/views/pick_printer_bottom_sheet.dart';
 import 'package:miva_pos_app/app/widgets/miva_card.dart';
 
 import '../controllers/receipt_success_controller.dart';
@@ -173,21 +174,33 @@ class ReceiptSuccessView extends GetView<ReceiptSuccessController> {
                               ),
                             ),
                             const Gap(18),
-                            SizedBox(
-                              width: 340,
-                              child: OutlinedButton.icon(
-                                icon: const Icon(FontAwesomeIcons.print),
-                                onPressed: () {
-                                  // Aksi ketika tombol ditekan
-                                },
-                                label: const Text(
-                                  "Cetak Struk",
-                                  style: TextStyle(
-                                      fontFamily: "Inter",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 300,
+                                  child: OutlinedButton.icon(
+                                    icon: const Icon(FontAwesomeIcons.print),
+                                    onPressed: () {
+                                      // Aksi ketika tombol ditekan
+                                      pickPrinterBottomSheet(context);
+                                    },
+                                    label: const Text(
+                                      "Cetak Struk",
+                                      style: TextStyle(
+                                          fontFamily: "Inter",
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                IconButton(
+                                    onPressed: () {
+                                      pickPrinterBottomSheet(context);
+                                    },
+                                    icon: const Icon(
+                                        FontAwesomeIcons.ellipsisVertical))
+                              ],
                             )
                           ],
                         )

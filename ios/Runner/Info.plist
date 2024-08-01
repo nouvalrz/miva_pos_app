@@ -45,6 +45,8 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Bluetooth access to connect 58mm or 80mm thermal printers</string>
 	<key>NSCameraUsageDescription</key>
 <string>We need access to your camera to take photos.</string>
 <key>NSPhotoLibraryUsageDescription</key>
@@ -61,5 +63,6 @@
     <string>en</string>
     <string>id</string>
 </array>
+
 </dict>
 </plist>
