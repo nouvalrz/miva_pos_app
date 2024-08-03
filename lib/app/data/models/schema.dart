@@ -54,7 +54,8 @@ const schema = Schema([
     Column.integer('product_cost_price'),
     Column.integer('product_sale_price'),
     Column.integer('quantity'),
-    Column.text('created_at')
+    Column.text('created_at'),
+    Column.text('product_name')
   ], indexes: [
     Index("receipt_products_business_id_idx", [IndexedColumn('business_id')]),
     Index("receipt_products_product_id_idx", [IndexedColumn('product_id')]),

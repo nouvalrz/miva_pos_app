@@ -34,7 +34,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const WITH_SESSION = Routes.HOME;
+  static const WITH_SESSION = Routes.SPLASH;
   static const WITHOUT_SESSION = Routes.LOGIN;
 
   static final routes = [

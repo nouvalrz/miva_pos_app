@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:miva_pos_app/app/data/repositories/business_pref_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/business_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/transaction_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/user_repository.dart';
@@ -15,9 +16,14 @@ class HomeBinding extends Bindings {
     Get.lazyPut<BusinessRepository>(
       () => BusinessRepository(),
     );
+    Get.lazyPut<BusinessPrefRepository>(
+      () => BusinessPrefRepository(),
+    );
     Get.lazyPut<HomeController>(
       () => HomeController(
-          userRepository: Get.find(), businessRepository: Get.find()),
+          userRepository: Get.find(),
+          businessRepository: Get.find(),
+          businessPrefRepository: Get.find()),
     );
     Get.lazyPut<TransactionRepository>(
       () => TransactionRepository(),

@@ -105,9 +105,9 @@ class ReceiptRepository {
         var productQuery = """
           INSERT INTO
           $receiptProductsTable
-          (id, business_id, receipt_id, product_id, product_cost_price, product_sale_price, quantity, created_at)
+          (id, business_id, receipt_id, product_id, product_cost_price, product_sale_price, quantity, product_name, created_at)
           VALUES
-          (uuid(), ?, ?, ?, ?, ?,?, datetime())
+          (uuid(), ?, ?, ?, ?, ?,?,?, datetime())
         """;
         var productParameters = [
           businessId,
@@ -115,7 +115,8 @@ class ReceiptRepository {
           receiptProducts[k].productId,
           receiptProducts[k].productCostPrice,
           receiptProducts[k].productSalePrice,
-          receiptProducts[k].quantity
+          receiptProducts[k].quantity,
+          receiptProducts[k].productName
         ];
         await tx.execute(productQuery, productParameters);
       }

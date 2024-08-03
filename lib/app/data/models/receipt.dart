@@ -48,7 +48,9 @@ class Receipt {
         cashGiven: row["cash_given"],
         cashChange: row["cash_change"],
         totalProfit: row["total_profit"],
-        createdAt: DateTime.parse(row["created_at"]),
+        createdAt: DateTime.parse(row["created_at"].toString().endsWith("Z")
+            ? row["created_at"].toString()
+            : "${row["created_at"]}Z"),
         firstProductName: row["first_product_name"],
         productsCount: row["products_count"]);
   }

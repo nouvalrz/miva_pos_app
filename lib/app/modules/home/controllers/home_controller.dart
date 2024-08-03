@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:miva_pos_app/app/data/models/business.dart';
+import 'package:miva_pos_app/app/data/models/business_pref.dart';
 import 'package:miva_pos_app/app/data/models/user.dart' as user_model;
+import 'package:miva_pos_app/app/data/repositories/business_pref_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/business_repository.dart';
 import 'package:miva_pos_app/app/data/repositories/user_repository.dart';
 import 'package:miva_pos_app/app/modules/dashboard/bindings/dashboard_binding.dart';
@@ -21,17 +26,22 @@ import 'package:miva_pos_app/app/modules/report/bindings/report_binding.dart';
 import 'package:miva_pos_app/app/modules/report/views/report_view.dart';
 import 'package:miva_pos_app/app/modules/setting/bindings/setting_binding.dart';
 import 'package:miva_pos_app/app/modules/setting/views/setting_view.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeController extends GetxController {
   HomeController(
-      {required this.userRepository, required this.businessRepository});
+      {required this.userRepository,
+      required this.businessRepository,
+      required this.businessPrefRepository});
 
   final UserRepository userRepository;
   final BusinessRepository businessRepository;
+  final BusinessPrefRepository businessPrefRepository;
   final supabaseInstance = Supabase.instance.client;
   late user_model.User loggedInUser;
   late Business loggedInBusiness;
+  late BusinessPref loggedInBusinessPref;
   final RxInt selectedPage = 0.obs;
   final List<Widget> pages = [
     const DashboardView(),
@@ -52,6 +62,8 @@ class HomeController extends GetxController {
     isLoading.value = true;
     await getUser();
     await getBusiness();
+    await getBusinessPref();
+    await downloadBusinessLogo();
     isLoading.value = false;
     DashboardBinding().dependencies();
   }
@@ -112,5 +124,33 @@ class HomeController extends GetxController {
     loggedInBusiness =
         await businessRepository.getBusiness(loggedInUser.businessId);
     // isLoading.value = false;
+  }
+
+  Future<void> getBusinessPref() async {
+    // isLoading.value = true;
+    loggedInBusinessPref =
+        await businessPrefRepository.getBusinessPref(loggedInUser.businessId);
+    // isLoading.value = false;
+  }
+
+  Future<void> downloadBusinessLogo() async {
+    if (loggedInBusiness.logoUrl == null) {
+      return;
+    }
+
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+
+    String fileName = 'logo.png';
+    File file = File('$appDocPath/$fileName');
+
+    if (await file.exists()) {
+      return;
+    }
+    final http.Response downloadResponse =
+        await http.get(Uri.parse(loggedInBusiness.logoUrl!));
+    if (downloadResponse.statusCode == 200) {
+      await file.writeAsBytes(downloadResponse.bodyBytes);
+    }
   }
 }

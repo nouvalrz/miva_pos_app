@@ -7,8 +7,9 @@ class SplashController extends GetxController {
   RxBool isReady = false.obs;
   StreamSubscription? _syncStatusSubscription;
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+
     _syncStatusSubscription = db.statusStream.listen((status) {
       var statusSync = status.hasSynced ?? false;
       if (statusSync) {

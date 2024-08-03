@@ -36,8 +36,8 @@ class ReceiptCard extends StatelessWidget {
                       fontSize: 15),
                 ),
                 Text(
-                  DateFormat('HH:mm - dd MMM')
-                      .format(receipt.createdAt.toLocal()),
+                  DateFormat('HH:mm - dd MMM').format(
+                      receipt.createdAt.copyWith(isUtc: true).toLocal()),
                   style: const TextStyle(fontFamily: "Inter", fontSize: 15),
                 ),
               ],

@@ -177,23 +177,31 @@ class ReceiptSuccessView extends GetView<ReceiptSuccessController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: OutlinedButton.icon(
-                                    icon: const Icon(FontAwesomeIcons.print),
-                                    onPressed: () {
-                                      // Aksi ketika tombol ditekan
-                                      pickPrinterBottomSheet(context);
-                                    },
-                                    label: const Text(
-                                      "Cetak Struk",
-                                      style: TextStyle(
-                                          fontFamily: "Inter",
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ),
+                                Obx(() => SizedBox(
+                                      width: 300,
+                                      child: OutlinedButton.icon(
+                                        icon:
+                                            const Icon(FontAwesomeIcons.print),
+                                        onPressed: () {
+                                          // Aksi ketika tombol ditekan
+                                          if (controller
+                                                  .connectedBluetoothDeviceMac
+                                                  .value !=
+                                              "") {
+                                            controller.printReceipt();
+                                          } else {
+                                            pickPrinterBottomSheet(context);
+                                          }
+                                        },
+                                        label: Text(
+                                          "Cetak Struk > ${controller.connectedBluetoothDeviceName.value}",
+                                          style: const TextStyle(
+                                              fontFamily: "Inter",
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    )),
                                 IconButton(
                                     onPressed: () {
                                       pickPrinterBottomSheet(context);

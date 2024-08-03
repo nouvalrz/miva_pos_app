@@ -9,6 +9,7 @@ class ReceiptProduct {
   final int quantity;
   final DateTime createdAt;
   final String businessId;
+  final String productName;
 
   ReceiptProduct({
     required this.id,
@@ -19,6 +20,7 @@ class ReceiptProduct {
     required this.quantity,
     required this.createdAt,
     required this.businessId,
+    required this.productName,
   });
 
   factory ReceiptProduct.fromRow(Sqlite.Row row) {
@@ -31,6 +33,7 @@ class ReceiptProduct {
       quantity: row["quantity"],
       createdAt: DateTime.parse(row["created_at"]),
       businessId: row["business_id"],
+      productName: row["product_name"],
     );
   }
 }

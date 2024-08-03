@@ -248,8 +248,13 @@ class ReceiptConfirmationController extends GetxController {
       final ReceiptController receiptController = Get.find<ReceiptController>();
       receiptController.receiptProducts.clear();
 
-      Get.offNamed(Routes.RECEIPT_SUCCESS,
-          arguments: {"receipt": storedReceipt});
+      Get.offNamed(Routes.RECEIPT_SUCCESS, arguments: {
+        "receipt": storedReceipt,
+        "receiptProducts": receiptProductList,
+        "receiptAdditionalFees": receiptAdditionalFeeList,
+        "receiptDiscounts": receiptDiscountList,
+        "receiptPaymentMethodName": selectedPaymentMethodName.value
+      });
       // AwesomeDialog(
       //   context: Get.context!,
       //   dialogType: DialogType.success,
@@ -319,6 +324,7 @@ class ReceiptConfirmationController extends GetxController {
             productSalePrice: element.salePrice,
             quantity: element.receiptQuantity,
             createdAt: DateTime.now(),
+            productName: element.name,
             businessId: ""))
         .toList();
   }
