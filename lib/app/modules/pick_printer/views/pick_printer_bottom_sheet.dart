@@ -8,9 +8,9 @@ import 'package:miva_pos_app/app/modules/pick_printer/controllers/pick_printer_c
 import 'package:miva_pos_app/app/widgets/miva_card.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void pickPrinterBottomSheet(BuildContext context) {
+Future<void> pickPrinterBottomSheet(BuildContext context) async {
   final PickPrinterController controller = Get.put(PickPrinterController());
-  showMaterialModalBottomSheet(
+  await showMaterialModalBottomSheet(
     context: context,
     builder: (context) {
       return Padding(

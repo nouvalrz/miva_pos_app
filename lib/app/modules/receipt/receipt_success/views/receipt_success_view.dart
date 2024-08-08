@@ -182,7 +182,7 @@ class ReceiptSuccessView extends GetView<ReceiptSuccessController> {
                                       child: OutlinedButton.icon(
                                         icon:
                                             const Icon(FontAwesomeIcons.print),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           // Aksi ketika tombol ditekan
                                           if (controller
                                                   .connectedBluetoothDeviceMac
@@ -190,7 +190,10 @@ class ReceiptSuccessView extends GetView<ReceiptSuccessController> {
                                               "") {
                                             controller.printReceipt();
                                           } else {
-                                            pickPrinterBottomSheet(context);
+                                            await pickPrinterBottomSheet(
+                                                context);
+                                            controller
+                                                .getConnectedBluetoothDevice();
                                           }
                                         },
                                         label: Text(
@@ -203,8 +206,9 @@ class ReceiptSuccessView extends GetView<ReceiptSuccessController> {
                                       ),
                                     )),
                                 IconButton(
-                                    onPressed: () {
-                                      pickPrinterBottomSheet(context);
+                                    onPressed: () async {
+                                      await pickPrinterBottomSheet(context);
+                                      controller.getConnectedBluetoothDevice();
                                     },
                                     icon: const Icon(
                                         FontAwesomeIcons.ellipsisVertical))

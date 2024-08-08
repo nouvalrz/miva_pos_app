@@ -19,9 +19,14 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:image/image.dart' as img;
 
 class BluetoothPrinterService {
-  static Future<void> printReceipt({required List<int> receiptBytes}) async {
+  static Future<void> printReceipt(
+      {required List<int> receiptBytes, required String macAddress}) async {
     if (!(await PrintBluetoothThermal.connectionStatus)) {
-      throw Exception("Tidak ada printer yang terhubung");
+      bool connect =
+          await PrintBluetoothThermal.connect(macPrinterAddress: macAddress);
+      if (!connect) {
+        throw Exception("Tidak ada printer atau gagal tersambung. Coba Lagi!");
+      }
     }
     await PrintBluetoothThermal.writeBytes(receiptBytes);
   }

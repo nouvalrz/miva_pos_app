@@ -72,6 +72,7 @@ class ReceiptSuccessController extends GetxController {
     try {
       final HomeController homeController = Get.find<HomeController>();
       await BluetoothPrinterService.printReceipt(
+          macAddress: connectedBluetoothDeviceMac.value,
           receiptBytes: await BluetoothPrinterService.receiptToBytes(
               receipt: receipt,
               receiptPaymentMethodName: receiptPaymentMethodName,
