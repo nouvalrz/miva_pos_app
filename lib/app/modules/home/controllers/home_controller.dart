@@ -26,6 +26,7 @@ import 'package:miva_pos_app/app/modules/report/bindings/report_binding.dart';
 import 'package:miva_pos_app/app/modules/report/views/report_view.dart';
 import 'package:miva_pos_app/app/modules/setting/bindings/setting_binding.dart';
 import 'package:miva_pos_app/app/modules/setting/views/setting_view.dart';
+import 'package:miva_pos_app/app/routes/app_pages.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -51,6 +52,18 @@ class HomeController extends GetxController {
     const ExpenseView(),
     const SettingView(),
     const ReceiptView()
+  ];
+
+  var pages2 = [
+    GetRouterOutlet(
+      initialRoute: Routes.DASHBOARD,
+    ),
+    GetRouterOutlet(initialRoute: Routes.PRODUCT_CATEGORY),
+    GetRouterOutlet(initialRoute: Routes.LABEL_PRINT),
+    GetRouterOutlet(initialRoute: Routes.REPORT),
+    GetRouterOutlet(initialRoute: Routes.EXPENSE),
+    GetRouterOutlet(initialRoute: Routes.SETTING),
+    GetRouterOutlet(initialRoute: Routes.RECEIPT),
   ];
   RxBool isLoading = false.obs;
 

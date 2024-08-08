@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:miva_pos_app/app/data/models/category.dart';
 import 'package:miva_pos_app/app/data/models/product.dart';
 import 'package:miva_pos_app/app/data/repositories/category_repository.dart';
@@ -228,8 +230,9 @@ class ReceiptController extends GetxController {
 
   Future<void> playSound(String soundName) async {
     try {
-      await audioPlayer.setAsset('assets/sounds/$soundName.mp3');
-      await audioPlayer.play();
+      // await audioPlayer.setAsset('assets/sounds/$soundName.mp3');
+      // await audioPlayer.play();
+      await audioPlayer.play(AssetSource('sounds/$soundName.mp3'));
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }

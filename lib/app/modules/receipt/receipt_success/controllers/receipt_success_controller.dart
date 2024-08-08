@@ -1,6 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:miva_pos_app/app/data/models/receipt.dart';
 import 'package:miva_pos_app/app/data/models/receipt_additional_fee.dart';
 import 'package:miva_pos_app/app/data/models/receipt_discount.dart';
@@ -47,8 +47,9 @@ class ReceiptSuccessController extends GetxController {
 
   Future<void> playSound(String soundName) async {
     try {
-      await audioPlayer.setAsset('assets/sounds/$soundName.mp3');
-      await audioPlayer.play();
+      // await audioPlayer.setAsset('assets/sounds/$soundName.mp3');
+      // await audioPlayer.play();
+      await audioPlayer.play(AssetSource('sounds/$soundName.mp3'));
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }

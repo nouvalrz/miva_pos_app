@@ -1,0 +1,105 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "miva_pos_app",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "miva_pos_app (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "miva_pos_app (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "esc_pos_utils_plus",
+      "cwd": "vendor/esc_pos_utils_plus",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "esc_pos_utils_plus (profile mode)",
+      "cwd": "vendor/esc_pos_utils_plus",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "esc_pos_utils_plus (release mode)",
+      "cwd": "vendor/esc_pos_utils_plus",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "print_bluetooth_thermal",
+      "cwd": "vendor/print_bluetooth_thermal",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "print_bluetooth_thermal (profile mode)",
+      "cwd": "vendor/print_bluetooth_thermal",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "print_bluetooth_thermal (release mode)",
+      "cwd": "vendor/print_bluetooth_thermal",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "example",
+      "cwd": "vendor/esc_pos_utils_plus/example",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "example (profile mode)",
+      "cwd": "vendor/esc_pos_utils_plus/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "example (release mode)",
+      "cwd": "vendor/esc_pos_utils_plus/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "example",
+      "cwd": "vendor/print_bluetooth_thermal/example",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "example (profile mode)",
+      "cwd": "vendor/print_bluetooth_thermal/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "example (release mode)",
+      "cwd": "vendor/print_bluetooth_thermal/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
