@@ -34,6 +34,13 @@ class MivaV2Navigation extends StatelessWidget {
             // homeController.sideMenuController.changePage(index);
           }),
       SideMenuItem(
+          title: "Riwayat",
+          icon: const Icon(Icons.history),
+          onTap: (index, _) {
+            homeController.onDrawerItemTapped(index);
+            // homeController.sideMenuController.changePage(index);
+          }),
+      SideMenuItem(
           title: "Laporan",
           icon: const Icon(Icons.book),
           onTap: (index, _) {
@@ -81,6 +88,13 @@ class MivaV2Navigation extends StatelessWidget {
       SideMenuItem(
           title: "Cetak Label",
           icon: const Icon(Icons.print),
+          onTap: (index, _) {
+            homeController.onDrawerItemTapped(index);
+            // homeController.sideMenuController.changePage(index);
+          }),
+      SideMenuItem(
+          title: "Riwayat",
+          icon: const Icon(Icons.history),
           onTap: (index, _) {
             homeController.onDrawerItemTapped(index);
             // homeController.sideMenuController.changePage(index);

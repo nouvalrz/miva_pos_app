@@ -15,6 +15,8 @@ import 'package:miva_pos_app/app/modules/dashboard/bindings/dashboard_binding.da
 import 'package:miva_pos_app/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:miva_pos_app/app/modules/expense/bindings/expense_binding.dart';
 import 'package:miva_pos_app/app/modules/expense/views/expense_view.dart';
+import 'package:miva_pos_app/app/modules/history/bindings/history_binding.dart';
+import 'package:miva_pos_app/app/modules/history/views/history_view.dart';
 import 'package:miva_pos_app/app/modules/label_print/bindings/label_print_binding.dart';
 import 'package:miva_pos_app/app/modules/label_print/views/label_print_view.dart';
 import 'package:miva_pos_app/app/modules/product_category/bindings/product_category_binding.dart';
@@ -48,6 +50,7 @@ class HomeController extends GetxController {
     const DashboardView(),
     const ProductCategoryView(),
     const LabelPrintView(),
+    const HistoryView(),
     const ReportView(),
     const ExpenseView(),
     const SettingView(),
@@ -114,12 +117,14 @@ class HomeController extends GetxController {
       case 2:
         LabelPrintBinding().dependencies();
       case 3:
-        ReportBinding().dependencies();
+        HistoryBinding().dependencies();
       case 4:
-        ExpenseBinding().dependencies();
+        ReportBinding().dependencies();
       case 5:
-        SettingBinding().dependencies();
+        ExpenseBinding().dependencies();
       case 6:
+        SettingBinding().dependencies();
+      case 7:
         ReceiptBinding().dependencies();
     }
     sideMenuController.changePage(index);

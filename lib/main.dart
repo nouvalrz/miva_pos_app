@@ -33,7 +33,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: true,
       builder: (context) => GetMaterialApp(
         useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
