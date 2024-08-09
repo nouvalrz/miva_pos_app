@@ -1,3 +1,4 @@
+import "package:intl/intl.dart";
 import "package:miva_pos_app/app/data/models/receipt.dart";
 import "package:miva_pos_app/app/data/models/receipt_additional_fee.dart";
 import "package:miva_pos_app/app/data/models/receipt_discount.dart";
@@ -7,10 +8,47 @@ import "package:miva_pos_app/app/services/powersync_service.dart";
 import "../models/schema.dart";
 
 class ReceiptRepository {
+  static const ORDER_BY_DATE_ASC = "ORDER BY created_at ASC";
+  static const ORDER_BY_DATE_DESC = "ORDER BY created_at DESC";
+  static const ORDER_BY_TOTAL_BILL_DESC = "ORDER BY total_bill DESC";
+  static const ORDER_BY_TOTAL_BILL_ASC = "ORDER BY total_bill ASC";
   Future<Receipt> getReceipt({required String id}) async {
     final results =
         await db.get('SELECT * FROM $receiptsTable WHERE id = ?', [id]);
     return Receipt.fromRow(results);
+  }
+
+  Future<List<Receipt>> getAllReceiptFromDateRange({
+    required businessId,
+    required DateTime startDate,
+    required DateTime endDate,
+    String? searchKeyword,
+    String orderQuery = ORDER_BY_DATE_DESC,
+    int limit = 12,
+    int offset = 0,
+  }) async {
+    List parameters = [
+      businessId,
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
+    ];
+    if (searchKeyword != null && searchKeyword.isNotEmpty) {
+      parameters.add(searchKeyword);
+    }
+
+    parameters.add(limit);
+    parameters.add(offset);
+
+    final results = await db.getAll("""
+          SELECT * FROM $receiptsTable 
+          WHERE business_id = ? AND created_at BETWEEN ? AND ? 
+          ${searchKeyword != null && searchKeyword.isNotEmpty ? 'AND receipt_number LIKE ?' : ''}
+          $orderQuery 
+          LIMIT ? OFFSET ?
+        """, parameters);
+
+    print(results);
+    return results.map((result) => Receipt.fromRow(result)).toList();
   }
 
   Future<int> getCountReceiptByReceiptNumber(
@@ -23,9 +61,6 @@ class ReceiptRepository {
 
   Future<void> getAllReceiptProducts() async {
     final result = await db.getAll("SELECT * FROM $receiptProductsTable");
-    print("MANTAPP");
-    print("MANTAPP");
-    print("MANTAPP");
   }
 
   Future<Receipt> createReceipt(
