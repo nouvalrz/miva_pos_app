@@ -13,6 +13,7 @@ class Receipt {
   final int cashGiven;
   final int cashChange;
   final int totalProfit;
+  final int totalItem;
   final DateTime createdAt;
   String? firstProductName = "";
   final int? productsCount;
@@ -32,6 +33,7 @@ class Receipt {
       required this.totalProfit,
       required this.createdAt,
       required this.firstProductName,
+      required this.totalItem,
       required this.productsCount});
 
   factory Receipt.fromRow(Sqlite.Row row) {
@@ -47,6 +49,7 @@ class Receipt {
         totalBill: row["total_bill"],
         cashGiven: row["cash_given"],
         cashChange: row["cash_change"],
+        totalItem: row["total_item"],
         totalProfit: row["total_profit"],
         createdAt: DateTime.parse(row["created_at"].toString().endsWith("Z")
             ? row["created_at"].toString()

@@ -38,7 +38,8 @@ const schema = Schema([
     Column.integer('is_archived'),
     Column.text('old_receipt_of'),
     Column.integer('total_discount_price'),
-    Column.integer('total_additional_fee_price')
+    Column.integer('total_additional_fee_price'),
+    Column.integer('total_item'),
   ], indexes: [
     Index("receipts_business_id_idx", [IndexedColumn('business_id')]),
     Index("receipts_receipt_number_idx", [IndexedColumn('receipt_number')]),

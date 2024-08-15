@@ -225,6 +225,7 @@ class ReceiptConfirmationController extends GetxController {
           receiptNumber: receiptNumber,
           totalProductPrice: totalPrice.value,
           totalBill: finalPrice.value,
+          totalItem: totalQuantity.value,
           cashGiven:
               int.parse(cashGivenTextController.text.replaceAll(".", "")),
           cashChange: cashChange.value,

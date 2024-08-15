@@ -398,23 +398,39 @@ class HistoryView extends GetView<HistoryController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Daftar Struk",
-                      style: TextStyle(
-                        fontFamily: "Inter",
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Daftar Struk",
+                              style: TextStyle(
+                                fontFamily: "Inter",
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Obx(() => Text(
+                                  "Menampilkan 1-${controller.receiptCount.value} Struk",
+                                  style: const TextStyle(
+                                    fontFamily: "Inter",
+                                    color: Color(0xff7C7C7C),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )),
+                          ],
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              controller.pagingController.refresh();
+                              controller.updateReceiptSummary();
+                            },
+                            icon: const Icon(Icons.replay_outlined))
+                      ],
                     ),
-                    Obx(() => Text(
-                          "Menampilkan 1-${controller.receiptCount.value} Struk",
-                          style: const TextStyle(
-                            fontFamily: "Inter",
-                            color: Color(0xff7C7C7C),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )),
                     const Gap(12),
                     Expanded(
                         child: RefreshIndicator(
@@ -458,149 +474,215 @@ class ReceiptHistoryCard extends StatelessWidget {
     return MivaCard.outline(
       margin: EdgeInsets.zero,
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 30,
-                    decoration: const BoxDecoration(
-                        color: Color(0xff3C2387),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12),
-                            bottomRight: Radius.circular(12))),
-                    child: Center(
-                      child: Text(
-                        (index + 1).toString(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 30,
+                        decoration: const BoxDecoration(
+                            color: Color(0xff3C2387),
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12),
+                                bottomRight: Radius.circular(12))),
+                        child: Center(
+                          child: Text(
+                            (index + 1).toString(),
+                            style: const TextStyle(
+                              fontFamily: "Inter",
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Gap(8),
+                      Text(
+                        "#${receipt.receiptNumber}",
                         style: const TextStyle(
                           fontFamily: "Inter",
-                          color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  const Gap(8),
-                  Text(
-                    "#${receipt.receiptNumber}",
-                    style: const TextStyle(
-                      fontFamily: "Inter",
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                  const Gap(6),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          DateFormat('EEE, d MMM yyyy - HH.mm', 'id_ID')
+                              .format(receipt.createdAt.toLocal()),
+                          style: const TextStyle(
+                            fontFamily: "Inter",
+                            color: Color(0xff7C7C7C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        // const Gap(6),
+                        // const Row(
+                        //   mainAxisSize: MainAxisSize.min,
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   children: [
+                        //     Icon(
+                        //       FontAwesomeIcons.solidCircleUser,
+                        //       color: Color(0xff333333),
+                        //       size: 16,
+                        //     ),
+                        //     Gap(4),
+                        //     Text(
+                        //       "Nouval",
+                        //       style: TextStyle(
+                        //         fontFamily: "Inter",
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // )
+                      ],
                     ),
                   ),
                 ],
               ),
-              const Gap(6),
               Padding(
-                padding: const EdgeInsets.only(left: 6),
+                padding: const EdgeInsets.only(right: 6),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      DateFormat('EEE, d MMM yyyy - HH.mm', 'id_ID')
-                          .format(receipt.createdAt.toLocal()),
-                      style: const TextStyle(
-                        fontFamily: "Inter",
-                        color: Color(0xff7C7C7C),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Gap(6),
-                    const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.solidCircleUser,
-                          color: Color(0xff333333),
-                          size: 16,
-                        ),
-                        Gap(4),
-                        Text(
-                          "Nouval",
-                          style: TextStyle(
-                            fontFamily: "Inter",
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                    if (receipt.totalDiscountPrice != 0)
+                      const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Diskon",
+                            style: TextStyle(
+                              fontFamily: "Inter",
+                              color: Color(0xff7C7C7C),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                          Gap(6),
+                          Text(
+                            "- Rp.5000",
+                            style: TextStyle(
+                              fontFamily: "Inter",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    const Gap(2),
+                    if (receipt.totalAdditionalFeePrice != 0)
+                      const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Tambahan",
+                            style: TextStyle(
+                              fontFamily: "Inter",
+                              color: Color(0xff7C7C7C),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Gap(6),
+                          Text(
+                            "+ Rp.2000",
+                            style: TextStyle(
+                              fontFamily: "Inter",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    // const Gap(12),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   children: [
+                    //     Text(
+                    //       "${receipt.totalItem} Item",
+                    //       style: const TextStyle(
+                    //         fontFamily: "Inter",
+                    //         color: Color(0xff7C7C7C),
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.w500,
+                    //       ),
+                    //     ),
+                    //     const Gap(8),
+                    //     const Icon(
+                    //       FontAwesomeIcons.solidCircle,
+                    //       size: 6,
+                    //       color: Color.fromARGB(255, 158, 158, 158),
+                    //     ),
+                    //     const Gap(8),
+                    //     Text(
+                    //       NumberFormat.currency(
+                    //               locale: 'id', symbol: 'Rp', decimalDigits: 0)
+                    //           .format(receipt.totalBill),
+                    //       style: const TextStyle(
+                    //         fontFamily: "Inter",
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.w700,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
-              ),
+              )
             ],
           ),
+          const Gap(12),
           Padding(
-            padding: const EdgeInsets.only(right: 6),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Row(
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Diskon",
-                      style: TextStyle(
-                        fontFamily: "Inter",
-                        color: Color(0xff7C7C7C),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Icon(
+                      FontAwesomeIcons.solidCircleUser,
+                      color: Color(0xff333333),
+                      size: 16,
                     ),
-                    Gap(6),
+                    Gap(4),
                     Text(
-                      "- Rp.5000",
+                      "Nouval",
                       style: TextStyle(
                         fontFamily: "Inter",
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                const Gap(2),
-                const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Tambahan",
-                      style: TextStyle(
-                        fontFamily: "Inter",
-                        color: Color(0xff7C7C7C),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Gap(6),
-                    Text(
-                      "+ Rp.2000",
-                      style: TextStyle(
-                        fontFamily: "Inter",
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(12),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      "5 Item",
-                      style: TextStyle(
+                    Text(
+                      "${receipt.totalItem} Item",
+                      style: const TextStyle(
                         fontFamily: "Inter",
                         color: Color(0xff7C7C7C),
                         fontSize: 14,

@@ -63,7 +63,7 @@ class ReceiptRepository {
           DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
           DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
         ]);
-    return result["receipt_count"];
+    return result["receipt_count"] ?? 0;
   }
 
   Future<int> getTotalReceiptBillFromDateRange({
@@ -78,7 +78,7 @@ class ReceiptRepository {
           DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
           DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
         ]);
-    return result["total_receipt_bill"];
+    return result["total_receipt_bill"] ?? 0;
   }
 
   Future<int> getTotalReceiptProfitFromDateRange({
@@ -93,7 +93,7 @@ class ReceiptRepository {
           DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
           DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
         ]);
-    return result["total_receipt_profit"];
+    return result["total_receipt_profit"] ?? 0;
   }
 
   Future<int> getCountReceiptByReceiptNumber(
@@ -120,9 +120,10 @@ class ReceiptRepository {
       // CREATE RECEIPT
       String createReceiptQuery = """
         INSERT INTO $receiptsTable
-        (id, business_id, user_id, payment_method_id, receipt_number, total_product_price, total_bill, cash_given, cash_change, total_profit, is_archived, old_receipt_of, total_discount_price, total_additional_fee_price, created_at)
+        (id, business_id, user_id, payment_method_id, receipt_number, total_product_price, total_bill, cash_given, cash_change, total_profit, is_archived, old_receipt_of, total_discount_price, total_additional_fee_price, 
+        total_item, created_at)
         VALUES
-        (uuid(),?,?,?,?,?,?,?,?,?,?,?,?,?,datetime())
+        (uuid(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime())
         RETURNING *
       """;
       List<dynamic> parameters = [
@@ -138,7 +139,8 @@ class ReceiptRepository {
         0,
         null,
         receipt.totalDiscountPrice,
-        receipt.totalAdditionalFeePrice
+        receipt.totalAdditionalFeePrice,
+        receipt.totalItem
       ];
       final storedReceipt = await tx.execute(createReceiptQuery, parameters);
       finalReceipt = Receipt.fromRow(storedReceipt.first);
