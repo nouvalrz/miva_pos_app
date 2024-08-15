@@ -38,6 +38,12 @@ class HistoryController extends GetxController {
 
   var selectedOption = ReceiptRepository.ORDER_BY_DATE_DESC.obs;
 
+  var receiptCount = 0.obs;
+  var totalReceiptBill = 0.obs;
+  var totalReceiptProfit = 0.obs;
+
+  var dateChange = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -47,6 +53,7 @@ class HistoryController extends GetxController {
     searchInputController.value.addListener(() {
       pagingController.refresh();
     });
+    updateReceiptSummary();
   }
 
   final PagingController<int, Receipt> pagingController =
@@ -82,4 +89,44 @@ class HistoryController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
   }
+
+  void changeDate() {
+    pagingController.refresh();
+    updateReceiptSummary();
+  }
+
+  Future<void> updateReceiptSummary() async {
+    final HomeController homeController = Get.find<HomeController>();
+    receiptCount.value = await receiptRepository.getReceiptCountFromDateRange(
+        businessId: homeController.loggedInBusiness.id,
+        startDate: startDateRange.value,
+        endDate: endDateRange.value);
+    totalReceiptBill.value =
+        await receiptRepository.getTotalReceiptBillFromDateRange(
+            businessId: homeController.loggedInBusiness.id,
+            startDate: startDateRange.value,
+            endDate: endDateRange.value);
+    totalReceiptProfit.value =
+        await receiptRepository.getTotalReceiptProfitFromDateRange(
+            businessId: homeController.loggedInBusiness.id,
+            startDate: startDateRange.value,
+            endDate: endDateRange.value);
+  }
+
+  // void updateReceiptSummary() {
+  //   if (pagingController.itemList == null) {
+  //     return;
+  //   }
+  //   final receiptList = pagingController.itemList!;
+
+  //   receiptCount.value = receiptList.length;
+
+  //   totalReceiptBill.value = receiptList.fold(0, (sum, receipt) {
+  //     return sum + receipt.totalBill;
+  //   });
+
+  //   totalReceiptProfit.value = receiptList.fold(0, (sum, receipt) {
+  //     return sum + receipt.totalProfit;
+  //   });
+  // }
 }

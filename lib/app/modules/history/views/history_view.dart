@@ -208,8 +208,7 @@ class HistoryView extends GetView<HistoryController> {
                                             TextButton(
                                                 onPressed: () {
                                                   Get.back();
-                                                  controller.pagingController
-                                                      .refresh();
+                                                  controller.changeDate();
                                                 },
                                                 child: const Text("Pilih"))
                                           ],
@@ -249,28 +248,24 @@ class HistoryView extends GetView<HistoryController> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Text(
-                                  controller.pagingController.itemList != null
-                                      ? controller
-                                          .pagingController.itemList!.length
-                                          .toString()
-                                      : "0",
-                                  style: const TextStyle(
-                                    fontFamily: "Inter",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                Obx(() => Text(
+                                      controller.receiptCount.value.toString(),
+                                      style: const TextStyle(
+                                        fontFamily: "Inter",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )),
                               ],
                             ),
                           ),
-                          const MivaCard.filled(
+                          MivaCard.filled(
                             margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Total Penjualan",
                                   style: TextStyle(
                                     fontFamily: "Inter",
@@ -278,24 +273,29 @@ class HistoryView extends GetView<HistoryController> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Text(
-                                  "Rp250.000.000",
-                                  style: TextStyle(
-                                    fontFamily: "Inter",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                Obx(() => Text(
+                                      NumberFormat.currency(
+                                              locale: 'id',
+                                              symbol: 'Rp',
+                                              decimalDigits: 0)
+                                          .format(controller
+                                              .totalReceiptBill.value),
+                                      style: const TextStyle(
+                                        fontFamily: "Inter",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )),
                               ],
                             ),
                           ),
-                          const MivaCard.filled(
+                          MivaCard.filled(
                             margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Total Profit",
                                   style: TextStyle(
                                     fontFamily: "Inter",
@@ -303,14 +303,19 @@ class HistoryView extends GetView<HistoryController> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Text(
-                                  "Rp25.000.000",
-                                  style: TextStyle(
-                                    fontFamily: "Inter",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                Obx(() => Text(
+                                      NumberFormat.currency(
+                                              locale: 'id',
+                                              symbol: 'Rp',
+                                              decimalDigits: 0)
+                                          .format(controller
+                                              .totalReceiptProfit.value),
+                                      style: const TextStyle(
+                                        fontFamily: "Inter",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )),
                               ],
                             ),
                           )
@@ -401,15 +406,15 @@ class HistoryView extends GetView<HistoryController> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "Menampilkan 1-${controller.pagingController.itemList != null ? controller.pagingController.itemList!.length.toString() : "0"} Struk",
-                      style: const TextStyle(
-                        fontFamily: "Inter",
-                        color: Color(0xff7C7C7C),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    Obx(() => Text(
+                          "Menampilkan 1-${controller.receiptCount.value} Struk",
+                          style: const TextStyle(
+                            fontFamily: "Inter",
+                            color: Color(0xff7C7C7C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )),
                     const Gap(12),
                     Expanded(
                         child: RefreshIndicator(

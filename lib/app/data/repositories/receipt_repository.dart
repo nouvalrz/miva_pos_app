@@ -51,6 +51,51 @@ class ReceiptRepository {
     return results.map((result) => Receipt.fromRow(result)).toList();
   }
 
+  Future<int> getReceiptCountFromDateRange({
+    required businessId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final result = await db.get(
+        "SELECT COUNT(*) as receipt_count FROM $receiptsTable WHERE business_id = ? AND created_at BETWEEN ? AND ?",
+        [
+          businessId,
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
+        ]);
+    return result["receipt_count"];
+  }
+
+  Future<int> getTotalReceiptBillFromDateRange({
+    required businessId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final result = await db.get(
+        "SELECT SUM(total_bill) as total_receipt_bill FROM $receiptsTable WHERE business_id = ? AND  created_at BETWEEN ? AND ?",
+        [
+          businessId,
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
+        ]);
+    return result["total_receipt_bill"];
+  }
+
+  Future<int> getTotalReceiptProfitFromDateRange({
+    required businessId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final result = await db.get(
+        "SELECT SUM(total_profit) as total_receipt_profit FROM $receiptsTable WHERE business_id = ? AND  created_at BETWEEN ? AND ?",
+        [
+          businessId,
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
+        ]);
+    return result["total_receipt_profit"];
+  }
+
   Future<int> getCountReceiptByReceiptNumber(
       {required String businessId, required String receiptNumber}) async {
     final results = await db.get(
