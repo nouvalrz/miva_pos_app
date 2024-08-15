@@ -657,19 +657,19 @@ class ReceiptHistoryCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.solidCircleUser,
                       color: Color(0xff333333),
                       size: 16,
                     ),
-                    Gap(4),
+                    const Gap(4),
                     Text(
-                      "Nouval",
-                      style: TextStyle(
+                      receipt.employeeName ?? "",
+                      style: const TextStyle(
                         fontFamily: "Inter",
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

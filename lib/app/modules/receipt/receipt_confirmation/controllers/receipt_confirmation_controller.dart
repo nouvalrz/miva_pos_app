@@ -232,6 +232,7 @@ class ReceiptConfirmationController extends GetxController {
           totalProfit: finalTotalProfit,
           createdAt: DateTime.now(),
           firstProductName: "",
+          employeeName: "",
           productsCount: 0);
       List<ReceiptProduct> receiptProductList = mapReceiptProducts();
       List<ReceiptDiscount> receiptDiscountList = mapReceiptDiscounts();

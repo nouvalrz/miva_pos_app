@@ -27,27 +27,29 @@ class ReceiptRepository {
     int limit = 12,
     int offset = 0,
   }) async {
-    List parameters = [
+    List parameters = [];
+    if (searchKeyword != null && searchKeyword.isNotEmpty) {
+      parameters.add("%$searchKeyword%");
+    }
+
+    parameters.addAll([
       businessId,
       DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate.toUtc()),
       DateFormat('yyyy-MM-dd HH:mm:ss').format(endDate.toUtc()),
-    ];
-    if (searchKeyword != null && searchKeyword.isNotEmpty) {
-      parameters.add(searchKeyword);
-    }
+    ]);
 
     parameters.add(limit);
     parameters.add(offset);
 
     final results = await db.getAll("""
-          SELECT * FROM $receiptsTable 
-          WHERE business_id = ? AND created_at BETWEEN ? AND ? 
-          ${searchKeyword != null && searchKeyword.isNotEmpty ? 'AND receipt_number LIKE ?' : ''}
+          SELECT *, users.name as employee_name FROM $receiptsTable INNER JOIN $usersTable ON receipts.user_id = users.id
+          WHERE 
+          ${searchKeyword != null && searchKeyword.isNotEmpty ? ' receipts.receipt_number LIKE ? AND ' : ''}
+          receipts.business_id = ? AND receipts.created_at BETWEEN ? AND ? 
           $orderQuery 
           LIMIT ? OFFSET ?
         """, parameters);
 
-    print(results);
     return results.map((result) => Receipt.fromRow(result)).toList();
   }
 

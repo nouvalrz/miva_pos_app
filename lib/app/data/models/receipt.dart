@@ -16,6 +16,7 @@ class Receipt {
   final int totalItem;
   final DateTime createdAt;
   String? firstProductName = "";
+  String? employeeName = "";
   final int? productsCount;
 
   Receipt(
@@ -33,6 +34,7 @@ class Receipt {
       required this.totalProfit,
       required this.createdAt,
       required this.firstProductName,
+      required this.employeeName,
       required this.totalItem,
       required this.productsCount});
 
@@ -55,6 +57,7 @@ class Receipt {
             ? row["created_at"].toString()
             : "${row["created_at"]}Z"),
         firstProductName: row["first_product_name"],
+        employeeName: row["employee_name"],
         productsCount: row["products_count"]);
   }
 }
