@@ -59,8 +59,8 @@ class HistoryView extends GetView<HistoryController> {
                       MivaCard.outline(
                         margin: EdgeInsets.zero,
                         padding: const EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,6 +336,7 @@ class HistoryView extends GetView<HistoryController> {
                         child: TextField(
                           controller: controller.searchInputController.value,
                           decoration: InputDecoration(
+                              hintText: "Cari dengan nomor struk",
                               prefixIcon: const Icon(
                                 FontAwesomeIcons.search,
                                 size: 15,

@@ -42,7 +42,7 @@ class ReceiptRepository {
     parameters.add(offset);
 
     final results = await db.getAll("""
-          SELECT *, users.name as employee_name FROM $receiptsTable INNER JOIN $usersTable ON receipts.user_id = users.id
+          SELECT receipts.*, users.name as employee_name FROM $receiptsTable INNER JOIN $usersTable ON receipts.user_id = users.id
           WHERE 
           ${searchKeyword != null && searchKeyword.isNotEmpty ? ' receipts.receipt_number LIKE ? AND ' : ''}
           receipts.business_id = ? AND receipts.created_at BETWEEN ? AND ? 
